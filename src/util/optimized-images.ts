@@ -1,0 +1,73 @@
+export const alignmentIcons = {
+  // Left alignment icons
+  leftUnchecked: "data:image/svg+xml,%3Csvg width='55' height='40' viewBox='0 0 55 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0.5' y='0.5' width='54' height='39' rx='3.5' fill='%231F1B34' stroke='%23393553'/%3E%3Crect x='4.5' y='28.5' width='31' height='7' rx='0.5' fill='%23393553' stroke='%23393553'/%3E%3C/svg%3E",
+  leftChecked: "data:image/svg+xml,%3Csvg width='55' height='40' viewBox='0 0 55 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.5 4C0.5 2.067 2.067 0.5 4 0.5H51C52.933 0.5 54.5 2.067 54.5 4V36C54.5 37.933 52.933 39.5 51 39.5H4C2.067 39.5 0.5 37.933 0.5 36V4Z' fill='%231F1B34' stroke='%238C79FF'/%3E%3Cpath d='M4.5 29C4.5 28.7239 4.72386 28.5 5 28.5H35C35.2761 28.5 35.5 28.7239 35.5 29V35C35.5 35.2761 35.2761 35.5 35 35.5H5C4.72386 35.5 4.5 35.2761 4.5 35V29Z' fill='%238C79FF' stroke='%238C79FF'/%3E%3C/svg%3E",
+  
+  // Center alignment icons
+  centerUnchecked: "data:image/svg+xml,%3Csvg width='55' height='40' viewBox='0 0 55 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='-0.5' y='0.5' width='54' height='39' rx='5.5' transform='matrix(-1 0 0 1 54 0)' fill='%231F1B34' stroke='%23393553'/%3E%3Crect x='-0.5' y='0.5' width='40' height='5' rx='0.5' transform='matrix(-1 0 0 1 47 30)' fill='%23393553' stroke='%23393553'/%3E%3C/svg%3E",
+  centerChecked: "data:image/svg+xml,%3Csvg width='55' height='40' viewBox='0 0 55 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.5 4C54.5 2.067 52.933 0.5 51 0.5H4C2.067 0.5 0.5 2.067 0.5 4V36C0.5 37.933 2.067 39.5 4 39.5H51C52.933 39.5 54.5 37.933 54.5 36V4Z' fill='%231F1B34' stroke='%238C79FF'/%3E%3Cpath d='M47.5 31C47.5 30.7239 47.2761 30.5 47 30.5H8C7.72386 30.5 7.5 30.7239 7.5 31V35C7.5 35.2761 7.72386 35.5 8 35.5H47C47.2761 35.5 47.5 35.2761 47.5 35V31Z' fill='%238C79FF' stroke='%238C79FF'/%3E%3C/svg%3E",
+  
+  // Right alignment icons
+  rightUnchecked: "data:image/svg+xml,%3Csvg width='55' height='40' viewBox='0 0 55 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H49C52.0376 0.5 54.5 2.96243 54.5 6V34C54.5 37.0376 52.0376 39.5 49 39.5H6C2.96243 39.5 0.5 37.0376 0.5 34V6Z' fill='%231F1B34' stroke='%23393553'/%3E%3Cpath d='M19.5 29C19.5 28.7239 19.7239 28.5 20 28.5H50C50.2761 28.5 50.5 28.7239 50.5 29V35C50.5 35.2761 50.2761 35.5 50 35.5H20C19.7239 35.5 19.5 35.2761 19.5 35V29Z' fill='%23393553' stroke='%23393553'/%3E%3C/svg%3E",
+  rightChecked: "data:image/svg+xml,%3Csvg width='55' height='40' viewBox='0 0 55 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0.5' y='0.5' width='54' height='39' rx='3.5' fill='%231F1B34' stroke='%238C79FF'/%3E%3Crect x='19.5' y='28.5' width='31' height='7' rx='0.5' fill='%238C79FF' stroke='%238C79FF'/%3E%3C/svg%3E"
+};
+
+export const bannerStyleIcons = {
+  // Normal banner style
+  normalBanner: "data:image/svg+xml,%3Csvg width='80' height='32' viewBox='0 0 80 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0.5' y='0.5' width='79' height='31' rx='2.5' fill='white' stroke='%238C79FF'/%3E%3Crect x='53' y='21' width='24' height='8' rx='2' fill='%230777E6'/%3E%3Crect opacity='0.4' x='5.5' y='5.5' width='55' height='1' rx='0.5' fill='%23191728' stroke='%23AAAAAA'/%3E%3Crect opacity='0.4' x='5.5' y='10.5' width='37' height='1' rx='0.5' fill='%23191728' stroke='%23AAAAAA'/%3E%3Crect opacity='0.4' x='5.5' y='15.5' width='40' height='1' rx='0.5' fill='%23191728' stroke='%23AAAAAA'/%3E%3C/svg%3E",
+  
+  // Double banner style
+  doubleBanner: "data:image/svg+xml,%3Csvg width='80' height='32' viewBox='0 0 80 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 3C0 1.34315 1.34315 0 3 0H77C78.6569 0 80 1.34315 80 3V29C80 30.6569 78.6569 32 77 32H3C1.34315 32 0 30.6569 0 29V3Z' fill='white'/%3E%3Cpath opacity='0.7' d='M50 0H77C78.6569 0 80 1.34315 80 3V29C80 30.6569 78.6569 32 77 32H50V0Z' fill='%23B9F3FF'/%3E%3Crect x='53' y='21' width='24' height='8' rx='2' fill='%230777E6'/%3E%3Cpath opacity='0.4' d='M6 5.5H60C60.2761 5.5 60.5 5.72386 60.5 6C60.5 6.27614 60.2761 6.5 60 6.5H6C5.72386 6.5 5.5 6.27614 5.5 6C5.5 5.72386 5.72386 5.5 6 5.5Z' fill='%23191728' stroke='%23AAAAAA'/%3E%3Cpath opacity='0.4' d='M6 10.5H42C42.2761 10.5 42.5 10.7239 42.5 11C42.5 11.2761 42.2761 11.5 42 11.5H6C5.72386 11.5 5.5 11.2761 5.5 11C5.5 10.7239 5.72386 10.5 6 10.5Z' fill='%23191728' stroke='%23AAAAAA'/%3E%3Cpath opacity='0.4' d='M6 15.5H45C45.2761 15.5 45.5 15.7239 45.5 16C45.5 16.2761 45.2761 16.5 45 16.5H6C5.72386 16.5 5.5 16.2761 5.5 16C5.5 15.7239 5.72386 15.5 6 15.5Z' fill='%23191728' stroke='%23AAAAAA'/%3E%3C/svg%3E",
+  
+  // Big banner style
+  bigBanner: "data:image/svg+xml,%3Csvg width='55' height='48' viewBox='0 0 55 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 3C0 1.34315 1.34315 0 3 0H52C53.6569 0 55 1.34315 55 3V45C55 46.6569 53.6569 48 52 48H3C1.34315 48 0 46.6569 0 45V3Z' fill='white'/%3E%3Cpath d='M33 39C33 37.8954 33.8954 37 35 37H50.4118C51.5163 37 52.4118 37.8954 52.4118 39V43C52.4118 44.1046 51.5163 45 50.4118 45H35C33.8954 45 33 44.1046 33 43V39Z' fill='%230777E6'/%3E%3Cpath opacity='0.4' d='M5.35303 6C5.35303 5.72386 5.57688 5.5 5.85303 5.5H45.853C46.1292 5.5 46.353 5.72386 46.353 6C46.353 6.27614 46.1292 6.5 45.853 6.5H5.85303C5.57689 6.5 5.35303 6.27614 5.35303 6Z' fill='%23191728' stroke='%23AAAAAA'/%3E%3Cpath opacity='0.4' d='M5.35303 11C5.35303 10.7239 5.57688 10.5 5.85303 10.5H26.853C27.1292 10.5 27.353 10.7239 27.353 11C27.353 11.2761 27.1292 11.5 26.853 11.5H5.85303C5.57688 11.5 5.35303 11.2761 5.35303 11Z' fill='%23191728' stroke='%23AAAAAA'/%3E%3Cpath opacity='0.4' d='M5.35303 16C5.35303 15.7239 5.57688 15.5 5.85303 15.5H36.853C37.1292 15.5 37.353 15.7239 37.353 16C37.353 16.2761 37.1292 16.5 36.853 16.5H5.85303C5.57688 16.5 5.35303 16.2761 5.35303 16Z' fill='%23191728' stroke='%23AAAAAA'/%3E%3C/svg%3E",
+  
+  // Center aligned banner style
+  centerAligned: "data:image/svg+xml,%3Csvg width='80' height='32' viewBox='0 0 80 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='80' height='32' rx='3' fill='white'/%3E%3Cpath d='M28 23C28 21.8954 28.8954 21 30 21H50C51.1046 21 52 21.8954 52 23V27C52 28.1046 51.1046 29 50 29H30C28.8954 29 28 28.1046 28 27V23Z' fill='%230777E6'/%3E%3Cpath opacity='0.4' d='M10.5 6C10.5 5.72386 10.7239 5.5 11 5.5H65C65.2761 5.5 65.5 5.72386 65.5 6C65.5 6.27614 65.2761 6.5 65 6.5H11C10.7239 6.5 10.5 6.27614 10.5 6Z' fill='%23191728' stroke='%23AAAAAA'/%3E%3Cpath opacity='0.4' d='M21.5 11C21.5 10.7239 21.7239 10.5 22 10.5H54C54.2761 10.5 54.5 10.7239 54.5 11C54.5 11.2761 54.2761 11.5 54 11.5H22C21.7239 11.5 21.5 11.2761 21.5 11Z' fill='%23191728' stroke='%23AAAAAA'/%3E%3Cpath opacity='0.4' d='M15.5 16C15.5 15.7239 15.7239 15.5 16 15.5H60C60.2761 15.5 60.5 15.7239 60.5 16C60.5 16.2761 60.2761 16.5 60 16.5H16C15.7239 16.5 15.5 16.2761 15.5 16Z' fill='%23191728' stroke='%23AAAAAA'/%3E%3C/svg%3E",
+  
+  // Full width banner style
+  fullWidth: "data:image/svg+xml,%3Csvg width='140' height='32' viewBox='0 0 140 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 3C0 1.34315 1.34315 0 3 0H137C138.657 0 140 1.34315 140 3V29C140 30.6569 138.657 32 137 32H3C1.34315 32 0 30.6569 0 29V3Z' fill='white'/%3E%3Cpath d='M92.75 14C92.75 12.8954 93.6454 12 94.75 12H132.75C133.855 12 134.75 12.8954 134.75 14V18C134.75 19.1046 133.855 20 132.75 20H94.75C93.6454 20 92.75 19.1046 92.75 18V14Z' fill='%230777E6'/%3E%3Cpath opacity='0.4' d='M9.75 12.5H36.75C37.0261 12.5 37.25 12.7239 37.25 13C37.25 13.2761 37.0261 13.5 36.75 13.5H9.75C9.47386 13.5 9.25 13.2761 9.25 13C9.25 12.7239 9.47386 12.5 9.75 12.5Z' fill='%23191728' stroke='%23AAAAAA'/%3E%3Cpath opacity='0.4' d='M9.75 17.5H45.75C46.0261 17.5 46.25 17.7239 46.25 18C46.25 18.2761 46.0261 18.5 45.75 18.5H9.75C9.47386 18.5 9.25 18.2761 9.25 18C9.25 17.7239 9.47386 17.5 9.75 17.5Z' fill='%23191728' stroke='%23AAAAAA'/%3E%3Cpath opacity='0.4' d='M9.75 22.5H33.75C34.0261 22.5 34.25 22.7239 34.25 23C34.25 23.2761 34.0261 23.5 33.75 23.5H9.75C9.47386 23.5 9.25 23.2761 9.25 23C9.25 22.7239 9.47386 22.5 9.75 22.5Z' fill='%23191728' stroke='%23AAAAAA'/%3E%3C/svg%3E"
+};
+
+export const otherIcons = {
+  // Star icon
+  star: "data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='15' cy='15' r='15' fill='%232B2653'/%3E%3Cpath d='M16.1533 9.34001L17.3266 11.6867C17.4866 12.0133 17.9133 12.3267 18.2733 12.3867L20.3999 12.74C21.7599 12.9667 22.0799 13.9533 21.0999 14.9267L19.4466 16.58C19.1666 16.86 19.0133 17.4 19.0999 17.7867L19.5733 19.8333C19.9466 21.4533 19.0866 22.08 17.6533 21.2333L15.6599 20.0533C15.2999 19.84 14.7066 19.84 14.3399 20.0533L12.3466 21.2333C10.9199 22.08 10.0533 21.4467 10.4266 19.8333L10.8999 17.7867C10.9866 17.4 10.8333 16.86 10.5533 16.58L8.89994 14.9267C7.92661 13.9533 8.23994 12.9667 9.59994 12.74L11.7266 12.3867C12.0799 12.3267 12.5066 12.0133 12.6666 11.6867L13.8399 9.34001C14.4799 8.06668 15.5199 8.06668 16.1533 9.34001Z' stroke='%23798EFF' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
+};
+
+export const animationIcons = {
+  // Round shape (circle)
+  circle: "data:image/svg+xml,%3Csvg width='90' height='90' viewBox='0 0 90 90' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='45' cy='45' r='45' fill='url(%23paint0_linear_44_73)'/%3E%3Cdefs%3E%3ClinearGradient id='paint0_linear_44_73' x1='45' y1='0' x2='45' y2='90' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%230777E6'/%3E%3Cstop offset='1' stop-color='%2369B4FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E",
+  
+  // Union (blob)
+  blob: "data:image/svg+xml,%3Csvg width='85' height='88' viewBox='0 0 85 88' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M42.2838 0C46.0968 0 49.7067 1.5625 52.7223 4.5C53.8473 5.59365 55.363 6.07811 56.9098 5.85938C61.0818 5.25008 64.9099 6.10944 68.0036 8.35938C71.0816 10.6094 73.0973 13.9845 73.8004 18.1406C74.0504 19.6719 75.0036 20.9688 76.3786 21.7031C80.1129 23.6562 82.7067 26.6094 83.8942 30.2344C85.066 33.8592 84.7067 37.7813 82.8317 41.5625C82.1442 42.9531 82.1442 44.5469 82.8317 45.9375C84.7066 49.7185 85.0661 53.6407 83.8942 57.2656C82.7066 60.8905 80.1129 63.8438 76.3786 65.7969C75.0036 66.5313 74.0504 67.8282 73.8004 69.3594C73.0973 73.5154 71.0816 76.8907 68.0036 79.1406C64.9097 81.3905 61.0815 82.2499 56.9098 81.6406C55.3785 81.4062 53.8473 81.9062 52.7223 83C49.7062 85.9375 46.0968 87.5 42.2838 87.5C38.471 87.5 34.8618 85.9372 31.8463 83C30.7214 81.9063 29.2056 81.4064 27.6588 81.6406C23.5023 82.25 19.6579 81.3906 16.5641 79.1406C13.4861 76.8907 11.4704 73.5154 10.7672 69.3594C10.5016 67.8281 9.56411 66.5313 8.18911 65.7969C4.45483 63.8438 1.861 60.8905 0.673484 57.2656C-0.498385 53.6408 -0.138885 49.7186 1.73598 45.9375C2.42348 44.5469 2.42348 42.9531 1.73598 41.5625C-0.138986 37.7815 -0.498349 33.8593 0.673484 30.2344C1.86095 26.6095 4.45486 23.6562 8.18911 21.7031C9.56409 20.9687 10.5016 19.6718 10.7672 18.1406C11.4703 13.9845 13.4861 10.5938 16.5641 8.35938C19.6425 6.10938 23.4869 5.25 27.6588 5.85938C29.2056 6.09364 30.7214 5.59371 31.8463 4.5C34.8624 1.56265 38.471 3.08162e-05 42.2838 0Z' fill='url(%23paint0_linear_44_102)'/%3E%3Cdefs%3E%3ClinearGradient id='paint0_linear_44_102' x1='42.2838' y1='0' x2='42.2838' y2='87.5' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%230777E6'/%3E%3Cstop offset='1' stop-color='%2369B4FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E",
+  
+  // Dots for loading
+  dots: "data:image/svg+xml,%3Csvg width='54' height='54' viewBox='0 0 54 54' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='13' cy='11' r='11' fill='%230A081B'/%3E%3Ccircle cx='7' cy='31' r='7' fill='%230A081B'/%3E%3Ccircle cx='22' cy='28' r='5' fill='%230A081B'/%3E%3Ccircle cx='47' cy='19' r='7' fill='%230A081B'/%3E%3Ccircle cx='30' cy='47' r='7' fill='%230A081B'/%3E%3Ccircle cx='44' cy='40' r='5' fill='%230A081B'/%3E%3C/svg%3E",
+  
+  // ConsentBit logo
+  logo: "data:image/svg+xml,%3Csvg width='60' height='54' viewBox='0 0 60 54' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M19.752 52.9132C19.3075 53.3593 18.5869 53.3593 18.1424 52.9132L5.09642 39.8202C-1.69881 33.0005 -1.69881 21.9436 5.09642 15.1239C5.41248 14.8067 5.92491 14.8067 6.24097 15.1239L31.0186 39.9907C31.463 40.4368 31.463 41.16 31.0186 41.606L19.752 52.9132Z' fill='%230A081B'/%3E%3Cpath d='M21.4377 26.1631C21.124 25.8436 21.1277 25.3293 21.446 25.0144L46.4028 0.328703C46.8504 -0.114105 47.571 -0.108857 48.0122 0.340424L59.1968 11.7293C59.638 12.1786 59.6328 12.9018 59.1851 13.3446L46.0448 26.3423C39.2004 33.1123 28.1835 33.0321 21.4377 26.1631Z' fill='%230A081B'/%3E%3C/svg%3E"
+};
+
+export const purchaseLine = "data:image/svg+xml,%3Csvg width='494' height='1' viewBox='0 0 494 1' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect opacity='0.25' width='184' height='1' fill='url(%23paint0_linear_294_346)'/%3E%3Crect opacity='0.25' width='183' height='1' transform='matrix(1 0 0 -1 311 1)' fill='url(%23paint1_linear_294_346)'/%3E%3Cdefs%3E%3ClinearGradient id='paint0_linear_294_346' x1='0' y1='0.5' x2='184' y2='0.5' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='white' stop-opacity='0'/%3E%3Cstop offset='0.25' stop-color='white'/%3E%3Cstop offset='0.75' stop-color='white'/%3E%3Cstop offset='1' stop-color='white' stop-opacity='0'/%3E%3C/linearGradient%3E%3ClinearGradient id='paint1_linear_294_346' x1='0' y1='0.5' x2='183' y2='0.5' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='white' stop-opacity='0'/%3E%3Cstop offset='0.25' stop-color='white'/%3E%3Cstop offset='0.75' stop-color='white'/%3E%3Cstop offset='1' stop-color='white' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E";
+
+// Helper function to get alignment icon based on position and state
+export const getAlignmentIcon = (position: 'left' | 'center' | 'right', isSelected: boolean) => {
+  const icons = {
+    left: isSelected ? alignmentIcons.leftChecked : alignmentIcons.leftUnchecked,
+    center: isSelected ? alignmentIcons.centerChecked : alignmentIcons.centerUnchecked,
+    right: isSelected ? alignmentIcons.rightChecked : alignmentIcons.rightUnchecked
+  };
+  return icons[position];
+};
+
+// Helper function to get banner style icon
+export const getBannerStyleIcon = (style: string) => {
+  const icons = {
+    align: bannerStyleIcons.normalBanner,
+    alignstyle: bannerStyleIcons.doubleBanner,
+    bigstyle: bannerStyleIcons.bigBanner,
+    centeralign: bannerStyleIcons.centerAligned,
+    fullwidth: bannerStyleIcons.fullWidth
+  };
+  return icons[style as keyof typeof icons] || bannerStyleIcons.normalBanner;
+}; 

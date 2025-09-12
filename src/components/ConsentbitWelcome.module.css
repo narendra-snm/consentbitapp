@@ -1,0 +1,111 @@
+.wrapper {
+  min-height: 100vh;
+  background: #111324;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Inter', Arial, sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+.topBar {
+  position: absolute;
+  top: 32px;
+  left: 40px;
+  display: flex;
+  align-items: center;
+}
+.helpBar {
+  position: absolute;
+  top: 32px;
+  right: 40px;
+  color: #BCD0FB;
+  font-size: 15px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+.helpIcon {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 8px;
+  font-size: 22px;
+  color: #bbb;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  justify-content: center;
+  background: #191b2e;
+}
+.centerCard {
+  text-align: center;
+  margin-top: -10vh;
+  z-index: 1;
+  background: rgba(17,19,36,0.99);
+  border-radius: 16px;
+  padding: 54px 40px 55px 40px;
+  box-shadow: 0 2px 80px 0 rgba(17,19,36,0.18);
+  max-width: 470px;
+  position: relative;
+}
+.title {
+  font-size: 26px;
+  font-weight: 480;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.accent {
+  color: #46a1f8;
+}
+.desc {
+  font-size: 16px;
+  color: #8c97be;
+  font-weight: 400;
+  margin-bottom: 36px;
+  line-height: 1.4;
+}
+.authorizeBtn {
+  background: #3b5bfc;
+  color: #fff;
+  padding: 12px 40px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 17px;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 4px 22px 0 rgba(73, 122, 236, 0.10);
+  margin-top: 5px;
+  transition: background 0.17s;
+}
+.authorizeBtn:hover {
+  background: #225beb;
+}
+.avatars {
+  position: absolute;
+  top: 80px;
+  left: 320px;
+  display: flex;
+  align-items: center;
+  z-index: 2;
+}
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 700;
+  font-size: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: -9px;
+  border: 2.5px solid #232651;
+  background: #4699E2;
+}
+.avatar:last-child {
+  background: #7D7D7D;
+  margin-right: 0;
+}
