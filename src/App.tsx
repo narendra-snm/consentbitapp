@@ -28,7 +28,14 @@ type User = {
   displayName: string;
   email?: string;
 };
-
+type ScriptData = {
+  script: string;
+  isChanged: boolean;
+  isDismiss: boolean;
+  isSaved?: boolean;
+  isEditing?: boolean;
+  category: string | null;
+};
 function useSelection() {
   const [selection, setSelection] = useState<CanvasNode[]>([]);
   useEffect(() => {
@@ -36,54 +43,62 @@ function useSelection() {
   }, []);
   return selection;
 }
-
+async function fetchScript(){
+const publishInfo = await framer.getPublishInfo();
+const siteUrl = publishInfo?.production?.url || "Not Published";
+const result = await fetch(`http://localhost:4000/api/fetch-scripts?url=${encodeURIComponent(siteUrl)}`);
+const data = await result.json();
+return data; 
+}
 export function App() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-
+   const [check , setCheck] = useState(false);
+const [scripts, setScripts] = useState<ScriptData[]>([])
+const [screen, setScreen] = useState(1);
   // ✅ Fetch profile using stored JWT token
-  const fetchProfile = async () => {
-    setLoading(true);
-    const token = localStorage.getItem("auth_token");
-    if (!token) {
-      setUser(null);
-      setLoading(false);
-      return;
-    }
+  // const fetchProfile = async () => {
+  //   setLoading(true);
+  //   const token = localStorage.getItem("auth_token");
+  //   if (!token) {
+  //     setUser(null);
+  //     setLoading(false);
+  //     return;
+  //   }
 
-    try {
-      const res = await fetch("https://consentbitapp.onrender.com/auth/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await res.json();
+  //   try {
+  //     const res = await fetch("https://consentbitapp.onrender.com/auth/me", {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     const data = await res.json();
 
-      if (data.loggedIn) {
-        console.log("✅ User is logged in:", data.user);
-        setUser(data.user);
-      } else {
-        console.log("⚠️ Token invalid or expired");
-        setUser(null);
-        localStorage.removeItem("auth_token");
-      }
-    } catch (err) {
-      console.error("❌ Profile fetch failed:", err);
-      setUser(null);
-      localStorage.removeItem("auth_token");
-    } finally {
-      setLoading(false);
-    }
-  };
+  //     if (data.loggedIn) {
+  //       console.log("✅ User is logged in:", data.user);
+  //       setUser(data.user);
+  //     } else {
+  //       console.log("⚠️ Token invalid or expired");
+  //       setUser(null);
+  //       localStorage.removeItem("auth_token");
+  //     }
+  //   } catch (err) {
+  //     console.error("❌ Profile fetch failed:", err);
+  //     setUser(null);
+  //     localStorage.removeItem("auth_token");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  // ✅ Trigger Google login popup
-  const triggerGoogleLogin = () => {
-    window.open(
-      "https://consentbitapp.onrender.com/auth/google",
-      "_blank",
-      "width=500,height=600"
-    );
-  };
+  // // ✅ Trigger Google login popup
+  // const triggerGoogleLogin = () => {
+  //   window.open(
+  //     "https://consentbitapp.onrender.com/auth/google",
+  //     "_blank",
+  //     "width=500,height=600"
+  //   );
+  // };
 
   // ✅ Stateless logout — just delete token
   const logout = () => {
@@ -91,56 +106,66 @@ export function App() {
     setUser(null);
   };
 
-  // ✅ Listen for JWT token via postMessage
-  useEffect(() => {
-    fetchProfile();
+  // // ✅ Listen for JWT token via postMessage
+  // useEffect(() => {
+  //   fetchProfile();
 
-    const listener = (event: MessageEvent) => {
-      console.log("📩 Message received:", event.origin, event.data);
+  //   const listener = (event: MessageEvent) => {
+  //     console.log("📩 Message received:", event.origin, event.data);
 
-      // Expecting: { type: "auth-success", token: "..." }
-      if (event.data?.type === "auth-success" && event.data.token) {
-        const token = event.data.token;
-        localStorage.setItem("auth_token", token);
-        console.log("✅ Token received and saved:", token);
-        fetchProfile(); // refresh
-      }
-    };
+  //     // Expecting: { type: "auth-success", token: "..." }
+  //     if (event.data?.type === "auth-success" && event.data.token) {
+  //       const token = event.data.token;
+  //       localStorage.setItem("auth_token", token);
+  //       console.log("✅ Token received and saved:", token);
+  //       fetchProfile(); // refresh
+  //     }
+  //   };
 
-    window.addEventListener("message", listener);
-    return () => window.removeEventListener("message", listener);
-  }, []);
+  //   window.addEventListener("message", listener);
+  //   return () => window.removeEventListener("message", listener);
+  // }, []);
 
   // --- UI States ---
-  if (loading) return <LoadingScreen />;
+  // if (loading) return <LoadingScreen />;
 
-  if (!user) {
-    return (
-      <div style={{ padding: "20px", textAlign: "center" }}>
-        <p>Please log in to use this plugin</p>
-        <button
-          onClick={triggerGoogleLogin}
-          style={{
-            padding: "10px 20px",
-            background: "#4285F4",
-            color: "#fff",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-          }}
-        >
-          Login with Google
-        </button>
-      </div>
-    );
-  }
+  // if (!user) {
+  //   return (
+  //     <div style={{ padding: "20px", textAlign: "center" }}>
+  //       <p>Please log in to use this plugin</p>
+  //       <button
+  //         onClick={triggerGoogleLogin}
+  //         style={{
+  //           padding: "10px 20px",
+  //           background: "#4285F4",
+  //           color: "#fff",
+  //           border: "none",
+  //           borderRadius: "6px",
+  //           cursor: "pointer",
+  //         }}
+  //       >
+  //         Login with Google
+  //       </button>
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
       <Header />
-      <MainContent />
-      {/* <ScreenTwo />
-      <ScreenThird />
+   {screen === 1 &&   <MainContent onClick={() => {setScreen(2)}} setUser={setUser} user={user} loading={loading}   setLoading={setLoading} />}
+     { screen === 2 &&  <ScreenTwo onClick={async() => {
+        setScreen(3)
+        setLoading(true);
+        const data = await fetchScript();
+    console.log("Fetched Script Data in useEffect:", data);
+    if(data && data.scripts){
+      setScripts(data.scripts);
+
+    }
+    setLoading(false);
+        }} />}
+     {/* <ScreenThird />
       <Screen5 />
       <SettingsPanel />
       <InstallBannerPopup />
@@ -150,7 +175,7 @@ export function App() {
       <ConfirmModal />
       <SuccessModal /> */}
 
-      <div style={{ marginTop: "20px", textAlign: "center" }}>
+     {user && <div style={{ marginTop: "20px", textAlign: "center" }}>
         <p>
           ✅ Logged in as <b>{user.displayName}</b> ({user.email})
         </p>
@@ -168,7 +193,7 @@ export function App() {
         >
           Logout
         </button>
-      </div>
+      </div>}
     </>
   );
 }

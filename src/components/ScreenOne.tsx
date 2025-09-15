@@ -1,5 +1,99 @@
+import { useEffect } from "react";
+type User = {
+  id: string;
+  displayName: string;
+  email?: string;
+};
 
-const MainContent = () => {
+const MainContent = ({
+  onClick,
+  setUser,
+  user,
+  setLoading,
+  loading,
+}: {
+  onClick: () => void;
+  setUser: (user: User | null) => void;
+  user: User | null;
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+}) => {
+  // ✅ Fetch profile using stored JWT token
+  const fetchProfile = async () => {
+    setLoading(true);
+    const token = localStorage.getItem("auth_token");
+    if (!token) {
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetch("https://consentbitapp.onrender.com/auth/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+
+      if (data.loggedIn) {
+        console.log("✅ User is logged in:", data.user);
+        setUser(data.user);
+      } else {
+        console.log("⚠️ Token invalid or expired");
+        setUser(null);
+        localStorage.removeItem("auth_token");
+      }
+    } catch (err) {
+      console.error("❌ Profile fetch failed:", err);
+      setUser(null);
+      localStorage.removeItem("auth_token");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ✅ Trigger Google login popup
+  const triggerGoogleLogin = () => {
+    window.open(
+      "https://consentbitapp.onrender.com/auth/google",
+      "_blank",
+      "width=500,height=600"
+    );
+  };
+
+  // ✅ Stateless logout — just delete token
+  const logout = () => {
+    localStorage.removeItem("auth_token");
+    setUser(null);
+  };
+
+  // ✅ Listen for JWT token via postMessage
+  useEffect(() => {
+    fetchProfile();
+
+    const listener = (event: MessageEvent) => {
+      console.log("📩 Message received:", event.origin, event.data);
+
+      // Expecting: { type: "auth-success", token: "..." }
+      if (event.data?.type === "auth-success" && event.data.token) {
+        const token = event.data.token;
+        localStorage.setItem("auth_token", token);
+        console.log("✅ Token received and saved:", token);
+        fetchProfile(); // refresh
+      }
+    };
+
+    window.addEventListener("message", listener);
+    return () => window.removeEventListener("message", listener);
+  }, []);
+
+ useEffect(() => {
+    console.log("User state changed:", user);
+      if (user) {
+        onClick();
+      }
+    }, [user, onClick]);
 
   return (
     <div className="main">
@@ -14,7 +108,7 @@ const MainContent = () => {
 
       
 
-      <button className="authorize-btn">Authorized</button>
+      <button className="authorize-btn" onClick={triggerGoogleLogin}>Authorized</button>
      
     </div>
     </div>

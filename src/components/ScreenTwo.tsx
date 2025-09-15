@@ -1,6 +1,6 @@
 import PanelRow from "./PannelRow";
 
-const ScreenTwo = () => {
+const ScreenTwo = ({onClick}: {onClick: () => void}) => {
 
   return (
     <div className="main">
@@ -15,7 +15,7 @@ const ScreenTwo = () => {
 
       
 
-      <button className="authorize-btn">Authorized</button>
+      <button className="authorize-btn" onClick={onClick}>Scan Project</button>
       <div className="bottom-panel">
         <PanelRow isblurred={false} />
       </div>

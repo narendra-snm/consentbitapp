@@ -5,7 +5,8 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import cors from "cors";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-
+import fetch from "node-fetch";       // To fetch the target site HTML
+import { JSDOM } from "jsdom";   
 dotenv.config();
 
 const app = express();
@@ -125,6 +126,51 @@ app.get("/auth/me", (req, res) => {
 app.post("/auth/logout", (req, res) => {
   res.json({ success: true });
 });
+
+
+app.get("/api/fetch-scripts", async (req, res) => {
+  try {
+    const siteUrl = req.query.url;
+    const response = await fetch(siteUrl);
+    const html = await response.text();
+
+    const dom = new JSDOM(html);
+    const scripts = dom.window.document.getElementsByTagName("script");
+
+    // Patterns for analytics scripts
+    const analyticsPatterns = ["google-analytics.com", "gtag.js", "hotjar.com"];
+
+    const allScripts = Array.from(scripts).map((script) => {
+      const src = script.getAttribute("src");
+      const content = script.textContent?.trim() || "";
+
+      // full script code: external or inline
+      const scriptContent = src ? `<script src="${src}"></script>` : `<script>${content}</script>`;
+
+      return {
+        script: scriptContent,
+        isChanged: false,
+        isDismiss: false,
+        isSaved: false,
+        isEditing: false,
+        category: analyticsPatterns.some((p) => (src || content).includes(p))
+          ? "analytics"
+          : null,
+      };
+    });
+
+    res.json({
+      scripts: allScripts,
+      totalScripts: allScripts.length,
+      totalAnalyticsScripts: allScripts.filter((s) => s.category === "analytics").length,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch site" });
+  }
+});
+
+
 
 // --- START SERVER ---
 const PORT = process.env.PORT || 4000;
