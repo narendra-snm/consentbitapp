@@ -16,6 +16,7 @@ import InstallBannerPopup from "./components/InstallBannerPopup";
 import ChoosePlan from "./components/ChoosePlan";
 import AdvancedCSVExportModal from "./components/ExportDataModal";
 import OpenGuide from "./components/OpenGuide";
+import PulseAnimation from "./components/PulseAnimation";
 
 framer.showUI({
   width: 800,
@@ -45,8 +46,9 @@ function useSelection() {
 }
 async function fetchScript(){
 const publishInfo = await framer.getPublishInfo();
+console.log(publishInfo);
 const siteUrl = publishInfo?.production?.url || "Not Published";
-const result = await fetch(`http://localhost:4000/api/fetch-scripts?url=${encodeURIComponent(siteUrl)}`);
+const result = await fetch(`https://consentbitapp-74kq.onrender.com/api/fetch-scripts?url=${encodeURIComponent(siteUrl)}`);
 const data = await result.json();
 return data; 
 }
@@ -149,22 +151,53 @@ const [screen, setScreen] = useState(1);
   //     </div>
   //   );
   // }
-
+const handleCheck = () => {
+    setCheck(!check);
+  }
   return (
     <>
       <Header />
    {screen === 1 &&   <MainContent onClick={() => {setScreen(2)}} setUser={setUser} user={user} loading={loading}   setLoading={setLoading} />}
-     { screen === 2 &&  <ScreenTwo onClick={async() => {
-        setScreen(3)
-        setLoading(true);
-        const data = await fetchScript();
-    console.log("Fetched Script Data in useEffect:", data);
-    if(data && data.scripts){
-      setScripts(data.scripts);
+     { screen === 2 &&  <ScreenTwo onClick={async () => {
+  try {
+    
+    setLoading(true);
 
+    const data = await fetchScript();
+    console.log("Fetched Script Data in useEffect:", data);
+
+    if (data && data.scripts) {
+      setScripts(data.scripts);
+      setScreen(3);
+    } else {
+      console.warn("No scripts found in response:", data);
     }
+  } catch (error) {
+    console.error("Error fetching scripts:", error);
+  } finally {
+    // always runs, whether success or error
     setLoading(false);
-        }} />}
+  }
+}} />}
+
+
+         { loading && <PulseAnimation/> }
+               {screen === 3 && <ScreenThird isPanel={true} scripts={scripts} setScripts={setScripts} onClick={() => {setScreen(4)}}/> }
+
+
+
+ {screen === 4 && <ConfirmModal 
+      checked={check}
+      onCheck={handleCheck}
+      onProceed={() => {setScreen(5)}}
+      onGoBack={() => {setScreen(3)}}
+      />  }
+
+
+            {screen === 5 && <Screen5 onBack={() => {setScreen(4)}} onNext={() => {setScreen(6)}}/> }
+  {screen === 6 && <SuccessModal onCustomize={() => { setScreen(7) }} /> }
+   
+        {screen === 7 && <SettingsPanel scripts={scripts} setScripts={setScripts} /> }
      {/* <ScreenThird />
       <Screen5 />
       <SettingsPanel />
@@ -174,7 +207,8 @@ const [screen, setScreen] = useState(1);
       <OpenGuide />
       <ConfirmModal />
       <SuccessModal /> */}
-
+      
+ 
      {user && <div style={{ marginTop: "20px", textAlign: "center" }}>
         <p>
           ✅ Logged in as <b>{user.displayName}</b> ({user.email})

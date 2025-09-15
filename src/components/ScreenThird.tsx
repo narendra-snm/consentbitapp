@@ -1,4 +1,3 @@
-import { useState } from "react";
 import ScriptCard from "./ScriptCard";
 import PanelRow from "./PannelRow";
 import line from "../assets/line.svg";
@@ -21,6 +20,10 @@ const dummyScripts = [
 type ScriptData = {
   script: string;
   isChanged: boolean;
+
+
+
+
   isDismiss: boolean;
   isSaved?: boolean;
   isEditing?: boolean;
@@ -94,17 +97,17 @@ const SavedComponent = ({ onEdit }: { onEdit: () => void }) => {
   );
 };
 
-export default function ScreenThird({isPanel=false}: {isPanel?: boolean}) {
-  const [scripts, setScripts] = useState<ScriptData[]>(
-    dummyScripts.map((script) => ({
-      script,
-      isChanged: false,
-      isSaved: false,
-      isEditing: true,
-      isDismiss: false,
-      category: null,
-    }))
-  );
+export default function ScreenThird({isPanel=false,setScripts,scripts,onClick}: {isPanel?: boolean, setScripts: React.Dispatch<React.SetStateAction<ScriptData[]>>, scripts: ScriptData[],onClick?: () => void}) {
+  // const [scripts, setScripts] = useState<ScriptData[]>(
+  //   dummyScripts.map((script) => ({
+  //     script,
+  //     isChanged: false,
+  //     isSaved: false,
+  //     isEditing: true,
+  //     isDismiss: false,
+  //     category: null,
+  //   }))
+  // );
 
   const handleCategoryChange = (idx: number, newCategory: string | null) => {
     setScripts((arr) =>
@@ -175,7 +178,7 @@ export default function ScreenThird({isPanel=false}: {isPanel?: boolean}) {
 
      { isPanel && <div className="script-heading">
         <h3 className="script-title">List of scripts to update</h3>
-        <button className="script-next">Next</button>
+        <button className="script-next" onClick={onClick}>Next</button>
       </div>}
 
 

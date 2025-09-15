@@ -14,7 +14,7 @@ const SuccessModal: React.FC<{ onCustomize: () => void }> = ({ onCustomize }) =>
       
     </div>
     <div className="modal-bottom-panel">
-    <CustomizationPromo/>
+    <CustomizationPromo onCustomize={onCustomize}/>
     </div>
   </div>
 );

@@ -1,6 +1,5 @@
-import React from "react";
 import promo from"../assets/image 3.png"
-const CustomizationPromo: React.FC = () => (
+const CustomizationPromo = ({ onCustomize }: { onCustomize: () => void }) => (
   <div className="customize-promo-box">
     {/* Left Side */}
     <div className="customize-promo-left">
@@ -13,7 +12,7 @@ const CustomizationPromo: React.FC = () => (
         <li>Smooth animations</li>
         <li>Region-specific compliance settings</li>
       </ul>
-      <button className="customize-promo-btn">
+      <button className="customize-promo-btn" onClick={onCustomize}>
         Start Customizing <span className="customize-promo-arrow">→</span>
       </button>
     </div>

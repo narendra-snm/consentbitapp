@@ -4,6 +4,10 @@ import SettingsPreview from "./SettingsPreview";
 import QuestionMark from "./QuestionMark";
 import ScreenThird from "./ScreenThird";
 import openguideArrow from '../assets/openguideArrow.svg'
+import ChoosePlan from "./ChoosePlan";
+import ExportDataModal from "./ExportDataModal";
+import InstallBannerPopup from "./InstallBannerPopup";
+import OpenGuide from "./OpenGuide";
 // Custom Toggle (single switch)
 const Toggle = ({ checked, onChange }: { checked: boolean; onChange: () => void }) => (
   <button
@@ -36,8 +40,17 @@ const SettingsSidebar = ({
   setToggle,
   selectCompliance,
   compliance,
-}: any) => (
+}: any) =>{
+
+  const [exportCSVClicked, setExportCSVClicked] = useState(false);
+  const [openGuide, setOpenGuide] = useState(false);
+   return(
+
+    // {exportCSVClicked && <ExportDataModal onClose={() => setExportCSVClicked(false)} />}
+    
   <div className="settings-sidebar">
+         {exportCSVClicked && <ExportDataModal onClose={() => setExportCSVClicked(false)} />}
+     {openGuide && <OpenGuide onClose={() => {setOpenGuide(false)}} />}
     <div className="settings-row">
       Expires <QuestionMark hoverText="Expires setting determines how long the user's consent choice is stored in their browser before they are asked again to provide their consent." />
       {/* <select className="settings-input">
@@ -92,7 +105,7 @@ banner." />
       </div>
     </div>
     <div className="settings-row">
-      <button className="settings-export-btn">Export CSV</button> <QuestionMark isLeft hoverText="Download consents in CSV format for easy analysis and sharing." />
+      <button className="settings-export-btn" onClick={() => setExportCSVClicked(true)}>Export CSV</button> <QuestionMark isLeft hoverText="Download consents in CSV format for easy analysis and sharing." />
     </div>
     <div className="settings-row">
       Show Close Button <QuestionMark isLeft hoverText="Sets the duration (in seconds) for which the cookie consent remains valid. After this period, the user will be prompted again for consent." />
@@ -112,20 +125,29 @@ banner." />
     </div>
     <div className="settings-row">
       Do not share link <QuestionMark isTop isLeft hoverText="Sets the duration (in seconds) for which the cookie consent remains valid. After this period, the user will be prompted again for consent." />
-      <button className="settings-input">
+      <button className="settings-input" onClick={() => setOpenGuide(true)}>
       open guide <img src={openguideArrow} alt="" />
       </button>
     </div>
-  </div>
-);
+  </div>)
+};
+
+
+type ScriptData = {
+  script: string;
+  isChanged: boolean;
+  isDismiss: boolean;
+  isSaved?: boolean;
+  isEditing?: boolean;
+  category: string | null;
+};
 
 
 
-
-
-
-const SettingsPanel: React.FC = () => {
+const SettingsPanel= ({scripts, setScripts}:{scripts: ScriptData[], setScripts: React.Dispatch<React.SetStateAction<ScriptData[]>>,}) => {
   const [activeTab, setActiveTab] = useState(0);
+  const[choosePlan,setChoosePlan] = useState(false);
+   const[createComponent,setcreateComponent] = useState(false);
   const [toggles, setToggles] = useState([false, false, false, false, false]);
   const [compliance, setCompliance] = useState<"us" | "gdpr">("us");
 const [customization, setCustomizationRaw] = useState<CustomizationState>({
@@ -168,6 +190,8 @@ const setCustomization = (next: Partial<CustomizationState>) =>
   return (
     <div className="settings-root">
       {/* Tabs */}
+{choosePlan && <ChoosePlan onClose={() => setChoosePlan(false)}/>}
+
       <div className="settings-tabs-row">
         {["Settings", "Customization", "Script"].map((tab, i) => (
           <Tab key={tab} active={activeTab === i} onClick={() => setActiveTab(i)}>
@@ -175,11 +199,11 @@ const setCustomization = (next: Partial<CustomizationState>) =>
           </Tab>
         ))}
         <div className="settings-subscribe-note">
-          You need a subscription to publish the production
+          <button onClick={() => setChoosePlan(true)}>You need a subscription to publish the production</button>
         </div>
-        {activeTab === 2 ? <button className="settings-publish-btn">Scan project</button>: <button className="settings-publish-btn">Create Component</button>}
+        {activeTab === 2 ? <button className="settings-publish-btn">Scan project</button>: <button onClick={() => setcreateComponent(true)} className="settings-publish-btn">Create Component</button>}
       </div>
-
+        {createComponent && <InstallBannerPopup open={createComponent} onConfirm={() => {setcreateComponent(false)}} onCancel={() => {setcreateComponent(false)}} /> }
       {/* Main content */}
      {activeTab === 0 && <div className="settings-content">
         <SettingsSidebar
@@ -203,7 +227,7 @@ const setCustomization = (next: Partial<CustomizationState>) =>
 
     {activeTab === 2 && (
       <div className="main">
-        <ScreenThird />
+        <ScreenThird scripts={scripts} setScripts={setScripts} isPanel={false} />
       </div>
     )}
     </div>

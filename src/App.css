@@ -152,7 +152,7 @@ body, html, #root {
   pointer-events: auto;
 }
 .bg-screen{
-background-image: url(./assests/bg-screen.png);
+background-image: url(./assets/bg-screen.png);
 background-size: cover;
 background-position: center;
 }
@@ -331,6 +331,7 @@ img.fbp-info-top-icon {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  
 }
 
 .script-heading {
@@ -381,6 +382,36 @@ hr.script-divider {
   min-width: 190px;
   height: 100%;
 }
+button:focus, button:hover {
+    background-color: unset;
+}
+
+/* Toast notification styles */
+.fbp-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4caf50;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  animation: fbp-toast-slide-in 0.3s ease-out;
+}
+
+@keyframes fbp-toast-slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
 
 /* Looks and size mimic the screenshot */
 .fbp-script {
@@ -390,7 +421,8 @@ hr.script-divider {
   font-size: 10px;
   font-family: 'Cascadia Mono', 'Consolas', 'monospace';
   
- 
+  white-space: pre-wrap;   /* wrap long text */
+  word-break: break-word;
   padding-right: 26px;
   overflow: auto;
   outline: none;
@@ -1766,7 +1798,7 @@ img.status-icon
     position: relative;
     font-family: 'DM Sans', sans-serif;
     width: 100%;
-    height: 406px;
+    height: 370px;
     border-radius: 4px;
     background: #1D1A3199;
     border: 1px solid #8B77F94D;
@@ -1786,7 +1818,7 @@ img.status-icon
     height: 291px;
     border-radius: 12px;
     min-width: 650px;
-    height: 404px;
+    height: 342px;
 }
 .choose-plan-card p {
     font-family: 'DM Sans', sans-serif;
@@ -1815,7 +1847,7 @@ img.status-icon
     text-align: center;
     vertical-align: middle;
     margin-top: 10px;
-    background-image: url(./assests/paymentLine.png);
+    background-image: url(./assets/paymentLine.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -1913,10 +1945,10 @@ img.status-icon
     border: 1px solid rgba(255, 255, 255, 0.3);
     width: fit-content;
     min-width: 652px;
-    height: 291px;
+   
     border-radius: 12px;
     min-width: 650px;
-    height: 378px;
+  
 }
 .switches-container input#switchMonthly:checked~.switch-wrapper {
     transform: translateX(0%);
@@ -2720,4 +2752,179 @@ button.settings-input {
     cursor: pointer;
     font-weight: 500;
     margin-top: 0px;
+}
+
+
+.pulse-stage {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Initial circle */
+.stage-circle {
+  border-radius: 50%;
+  background-image: linear-gradient(to bottom right, #2d9cdb, #56ccf2);
+  animation: appear 0.2s ease-out forwards;
+}
+
+/* Morphing blob */
+.stage-blob {
+  width: 80px;
+  height: 80px;
+  animation: blobMorph 0.3s ease forwards;
+}
+
+/* Rotate effect */
+.rotate {
+  animation: rotateBlob 0.4s ease-in-out forwards;
+}
+
+/* Dots animation */
+.stage-dots {
+  width: 50px;
+  height: 50px;
+  animation: dotsFadeIn 0.3s ease forwards;
+}
+
+/* Shrink out dots only */
+.fade-out-dots {
+  animation: fadeOutDots 0.3s ease-in forwards;
+}
+
+/* Final logo centered */
+.consentbit-logos {
+  width: 40px;
+  height: 40px;
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.consentbit-logos img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Animations */
+@keyframes appear {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes blobMorph {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.1) rotate(20deg);
+    border-radius: 30% 70% 70% 30%;
+  }
+}
+
+@keyframes rotateBlob {
+  from {
+    transform: rotate(20deg);
+  }
+
+  to {
+    transform: rotate(-20deg);
+  }
+}
+
+@keyframes dotsFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOutDots {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.pulse-overlays {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.3s ease-in-out;
+  backdrop-filter: blur(15.7px);
+  /* Add this line for background blur */
+  background: rgba(0, 0, 0, 0.3);
+}
+.consentbit-logo {
+  position: absolute;
+  bottom: 18px;
+  left: 18px
+}
+
+.consentbit-logo img {
+  width: 24px;
+  height: 24px;
+}
+.pulse-wrapper {
+  height: 100vh;
+ 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+
+.pulse-animation-container{
+
+  position: fixed;
+    z-index: 9999;
+    top: 0;
+    height: 100%;
+    width: 100%;
+}
+img.loading_imagee {
+    visibility: hidden;
+    margin-top: 27px;
+}
+p.pulse-text {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 28px;
 }

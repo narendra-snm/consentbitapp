@@ -33,6 +33,7 @@ const ScriptCard: React.FC<ScriptCardProps> = ({
   pasteLinkText = "Open the page to paste script",
   onDismiss,
 }) => {
+  const [showToast, setShowToast] = useState(false)
   // Category state local to card
   const [selectedCategoryIdx, setSelectedCategoryIdx] = useState<number | null>(
     initialCategory
@@ -45,9 +46,15 @@ const ScriptCard: React.FC<ScriptCardProps> = ({
     setSelectedCategoryIdx(idx);
     onCategoryChange(categories[idx].label); // pass value to parent
   };
-
+ const handleCopyScript = () => {
+    onCopyScript()
+    setShowToast(true)
+    setTimeout(() => setShowToast(false), 2000) // Hide after 2 seconds
+  }
   return (
     <div className="fbp-card">
+
+       {showToast && <div className="fbp-toast">Script copied!</div>}
       <img src={explainationMark} alt="Info" className="fbp-info-top-icon" />
       <div className="fbp-header-row">
         <span className="fbp-header-title">Update the Facebook Pixel script</span>
@@ -89,7 +96,7 @@ const ScriptCard: React.FC<ScriptCardProps> = ({
             </div>
             <button
               className="fbp-copy-btn"
-              onClick={onCopyScript}
+              onClick={handleCopyScript}
               aria-label="Copy script"
               style={{ backgroundImage: `url(${copyIcon})` }}
             />
@@ -112,6 +119,6 @@ const ScriptCard: React.FC<ScriptCardProps> = ({
       </a>
     </div>
   );
-};
+}
 
 export default ScriptCard;
