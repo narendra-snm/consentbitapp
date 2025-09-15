@@ -1,5 +1,23 @@
+import { useState } from "react";
 
 const OpenGuide = ({ onClose }: { onClose: () => void }) => {
+
+
+   const [showToast, setShowToast] = useState(false);
+
+  // ✅ copy text and show toast
+  const handleCopy = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setShowToast(true);
+
+      // hide toast after 2 seconds
+      setTimeout(() => setShowToast(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy text:", err);
+    }
+  };
+
   return (
     <div className="popup-overlays1">
       <div className="popup-content1">
@@ -58,6 +76,7 @@ const OpenGuide = ({ onClose }: { onClose: () => void }) => {
                 <p className="linktext" style={{ lineHeight: "2px" }}>
                   consentbit-data-donotshare
                 </p>
+                <button onClick={() => handleCopy("consentbit-data-donotshare")}>
                 <img
                   src="https://67c7218243770a3d2c39fb20.webflow-ext.com/68b0e5583769195ccc356001/8a025792224011a9b33d.svg"
                   alt="Copy"
@@ -69,6 +88,7 @@ const OpenGuide = ({ onClose }: { onClose: () => void }) => {
                     opacity: 0.7,
                   }}
                 />
+                </button>
               </div>
             </div>
           </div>
@@ -92,6 +112,7 @@ const OpenGuide = ({ onClose }: { onClose: () => void }) => {
                 <p className="linktext" style={{ lineHeight: "2px" }}>
                   consentbit-link-donotshare
                 </p>
+                <button onClick={() => handleCopy("consentbit-link-donotshare")}>
                 <img
                   src="https://67c7218243770a3d2c39fb20.webflow-ext.com/68b0e5583769195ccc356001/8a025792224011a9b33d.svg"
                   alt="Copy"
@@ -104,6 +125,7 @@ const OpenGuide = ({ onClose }: { onClose: () => void }) => {
                     transition: "opacity 0.2s",
                   }}
                 />
+                </button>
               </div>
             </div>
           </div>
@@ -206,7 +228,8 @@ const OpenGuide = ({ onClose }: { onClose: () => void }) => {
             </div>
           </div>
         </div>
-
+ {/* Toast */}
+        {showToast && <div className="fbp-toast">Copied!</div>}
       </div>
     </div>
   );

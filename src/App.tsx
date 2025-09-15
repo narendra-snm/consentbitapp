@@ -106,6 +106,7 @@ const [screen, setScreen] = useState(1);
   const logout = () => {
     localStorage.removeItem("auth_token");
     setUser(null);
+    setScreen(1);
   };
 
   // // ✅ Listen for JWT token via postMessage

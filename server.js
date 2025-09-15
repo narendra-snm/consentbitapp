@@ -135,25 +135,32 @@ app.get("/api/fetch-scripts", async (req, res) => {
     const html = await response.text();
 
     const dom = new JSDOM(html);
-    const scripts = dom.window.document.getElementsByTagName("script");
+    const headScripts = dom.window.document.head.querySelectorAll("script");
 
     // Patterns for analytics scripts
     const analyticsPatterns = ["google-analytics.com", "gtag.js", "hotjar.com"];
 
-    const allScripts = Array.from(scripts).map((script) => {
-      const src = script.getAttribute("src");
+    const allScripts = Array.from(headScripts).map((script) => {
+      // Serialize all attributes on the script tag
+      const attrs = Array.from(script.attributes)
+        .map(attr => `${attr.name}="${attr.value}"`)
+        .join(" ");
       const content = script.textContent?.trim() || "";
 
-      // full script code: external or inline
-      const scriptContent = src ? `<script src="${src}"></script>` : `<script>${content}</script>`;
+      // Recreate the script tag, preserving all attributes and inline code
+      const scriptTag = content
+        ? `<script ${attrs}>${content}</script>`
+        : `<script ${attrs}></script>`;
 
+      // Determine analytics category (match src and inline content)
+      const rawData = (script.getAttribute("src") || content);
       return {
-        script: scriptContent,
+        script: scriptTag,
         isChanged: false,
         isDismiss: false,
         isSaved: false,
         isEditing: false,
-        category: analyticsPatterns.some((p) => (src || content).includes(p))
+        category: analyticsPatterns.some(p => rawData.includes(p))
           ? "analytics"
           : null,
       };
@@ -162,13 +169,14 @@ app.get("/api/fetch-scripts", async (req, res) => {
     res.json({
       scripts: allScripts,
       totalScripts: allScripts.length,
-      totalAnalyticsScripts: allScripts.filter((s) => s.category === "analytics").length,
+      totalAnalyticsScripts: allScripts.filter(s => s.category === "analytics").length,
     });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch site" });
   }
 });
+
 
 
 
