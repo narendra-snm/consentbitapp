@@ -161,8 +161,8 @@ app.get("/api/fetch-scripts", async (req, res) => {
         isSaved: false,
         isEditing: false,
         category: analyticsPatterns.some(p => rawData.includes(p))
-          ? "analytics"
-          : null,
+          ? ["analytics"]
+          : [],
       };
     });
 

@@ -35,7 +35,7 @@ type ScriptData = {
   isDismiss: boolean;
   isSaved?: boolean;
   isEditing?: boolean;
-  category: string | null;
+   category: string[];
 };
 function useSelection() {
   const [selection, setSelection] = useState<CanvasNode[]>([]);
@@ -44,13 +44,34 @@ function useSelection() {
   }, []);
   return selection;
 }
+const projectInfo = await framer.getProjectInfo();
+
+const siteId = projectInfo.id; 
+
+
 async function fetchScript(){
 const publishInfo = await framer.getPublishInfo();
 console.log(publishInfo);
 const siteUrl = publishInfo?.production?.url || "Not Published";
 const result = await fetch(`https://consentbitapp-74kq.onrender.com/api/fetch-scripts?url=${encodeURIComponent(siteUrl)}`);
 const data = await result.json();
-return data; 
+console.log("Fetched Script Data:", data);
+// return data.scripts.map((item:any, index: number) => ({
+//   script: item[index],
+//   isChanged: false,
+//   isSaved: false,
+//   isEditing: true,
+//   isDismiss: false,
+//   category: [],
+// })); 
+
+const update=data.scripts.map((item:any, index: number) => ({
+  ...item,
+  category: [],
+}));
+console.log("Updated Script Data with category:", { ...data, scripts: update});
+return { ...data, scripts: update};
+
 }
 export function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -183,7 +204,7 @@ const handleCheck = () => {
 
 
          { loading && <PulseAnimation/> }
-               {screen === 3 && <ScreenThird isPanel={true} scripts={scripts} setScripts={setScripts} onClick={() => {setScreen(4)}}/> }
+               {screen === 3 && <ScreenThird siteId={siteId} isPanel={true} scripts={scripts} setScripts={setScripts} onClick={() => {setScreen(4)}}/> }
 
 
 

@@ -15,8 +15,8 @@ interface Category {
 interface ScriptCardProps {
   script: string;
   categories: Category[];
-  initialCategory: string | null;
-  onCategoryChange: (newCategory: string | null) => void;
+  initialCategory: string[];
+  onCategoryChange: (newCategory: string ) => void;
   onCopyScript: () => void;
   pasteLink: string;
   pasteLinkText?: string;
@@ -35,17 +35,18 @@ const ScriptCard: React.FC<ScriptCardProps> = ({
 }) => {
   const [showToast, setShowToast] = useState(false)
   // Category state local to card
-  const [selectedCategoryIdx, setSelectedCategoryIdx] = useState<number | null>(
-    initialCategory
-      ? categories.findIndex((c) => c.label === initialCategory)
-      : null
-  );
+const [selectedCategories, setSelectedCategories] = useState<string[]>(initialCategory || []);
+
 
   // Update parent when local state changes
-  const handleSelectCategory = (idx: number) => {
-    setSelectedCategoryIdx(idx);
-    onCategoryChange(categories[idx].label); // pass value to parent
-  };
+  const handleSelectCategory = (catLabel: string) => {
+  setSelectedCategories(prev =>
+    prev.includes(catLabel)
+      ? prev.filter(label => label !== catLabel)
+      : [...prev, catLabel]
+  );
+  onCategoryChange(catLabel);
+};
  const handleCopyScript = () => {
     onCopyScript()
     setShowToast(true)
@@ -70,23 +71,19 @@ const ScriptCard: React.FC<ScriptCardProps> = ({
         <div className="fbp-category-panel">
           <span className="fbp-category-label">Category:</span>
           <div className="fbp-radio-group">
-            {categories.map((cat, idx) => (
-              <div key={cat.label} className="fbp-radio-item">
-              <button
-                type="button"
-                key={cat.label}
-                className={
-                  "fbp-toggle-btn" + (selectedCategoryIdx === idx ? " active" : "")
-                }
-                onClick={() => handleSelectCategory(idx)}
-              >
-                <span className="fbp-toggle-slider" />
-                <span className="fbp-toggle-label">{cat.label}</span>
-              </button>
-                              <QuestionMark hoverText="Need help? Visit our support center or contact us for assistance." />
-
-              </div>
-            ))}
+           {categories.map((cat) => (
+  <div key={cat.label} className="fbp-radio-item">
+    <button
+      type="button"
+      className={"fbp-toggle-btn" + (selectedCategories.includes(cat.label) ? " active" : "")}
+      onClick={() => handleSelectCategory(cat.label)}
+    >
+      <span className="fbp-toggle-slider" />
+      <span className="fbp-toggle-label">{cat.label}</span>
+    </button>
+    <QuestionMark hoverText="Need help? Visit our support center or contact us for assistance." />
+  </div>
+))}
           </div>
         </div>
         <div className="fbp-script-panel">

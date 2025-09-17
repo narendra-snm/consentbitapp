@@ -27,8 +27,25 @@ type ScriptData = {
   isDismiss: boolean;
   isSaved?: boolean;
   isEditing?: boolean;
-  category: string | null;
+   category: string[];
 };
+const saveScripts = async (scripts: ScriptData[],siteId: string) => {
+    try {
+      const response = await fetch("https://misty-violet-4982.narendra-3c5.workers.dev/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ siteId, scripts }),
+      });
+
+     if (response.ok) {
+  console.log("Scripts saved to KV!");
+} else {
+  console.error("Failed to save scripts");
+}
+    } catch (err) {
+      console.error("Error saving scripts:", err);
+    }
+  };
 
 function Dismiss({ onDismiss }: { onDismiss: () => void }) {
   return (
@@ -97,7 +114,7 @@ const SavedComponent = ({ onEdit }: { onEdit: () => void }) => {
   );
 };
 
-export default function ScreenThird({isPanel=false,setScripts,scripts,onClick}: {isPanel?: boolean, setScripts: React.Dispatch<React.SetStateAction<ScriptData[]>>, scripts: ScriptData[],onClick?: () => void}) {
+export default function ScreenThird({isPanel=false,siteId,setScripts,scripts,onClick}: {isPanel?: boolean, siteId: string, setScripts: React.Dispatch<React.SetStateAction<ScriptData[]>>, scripts: ScriptData[],onClick?: () => void}) {
   // const [scripts, setScripts] = useState<ScriptData[]>(
   //   dummyScripts.map((script) => ({
   //     script,
@@ -109,19 +126,23 @@ export default function ScreenThird({isPanel=false,setScripts,scripts,onClick}: 
   //   }))
   // );
 
-  const handleCategoryChange = (idx: number, newCategory: string | null) => {
-    setScripts((arr) =>
-      arr.map((s, i) =>
-        i === idx
-          ? {
-              ...s,
-              category: newCategory,
-              isChanged: !!newCategory,
-            }
-          : s
-      )
-    );
-  };
+ const handleCategoryChange = (idx: number, newCategory: string) => {
+  console.log(`Category changed for script index ${idx}:`, newCategory);
+  setScripts((arr) =>
+    arr.map((s, i) =>
+      i === idx
+        ? {
+            ...s,
+            // Toggle category selection
+            category: s.category.includes(newCategory)
+              ? s.category.filter((cat) => cat !== newCategory)
+              : [...s.category, newCategory],
+            isChanged: true,
+          }
+        : s
+    )
+  );
+};
 
   const handleDismiss = (idx: number) => {
     setScripts((arr) =>
@@ -145,15 +166,18 @@ export default function ScreenThird({isPanel=false,setScripts,scripts,onClick}: 
   };
 
   const getScriptTagData = (s: ScriptData) => {
-    const attr = [
-      s.category ? ` data-category="${s.category}"` : "",
-      ` isChanged="${s.isChanged}"`,
-      ` isDismiss="${s.isDismiss}"`,
-    ].join("");
-    return s.script.replace("<script", `<script${attr}`);
-  };
+  const attr = [
+   s.isChanged ? ` type="text/plain"` : "", s.category && s.category.length > 0
+      ? ` data-category="${s.category.join(',')}"`
+      : "",
+  ].join("");
+  return s.script.replace("<script", `<script${attr}`);
+};
 
-  function handleSaveAll() {
+  async function handleSaveAll() {
+
+    await saveScripts(scripts,siteId);
+   
     setScripts((arr) =>
       arr.map((s) => ({
         ...s,
@@ -190,7 +214,7 @@ export default function ScreenThird({isPanel=false,setScripts,scripts,onClick}: 
         </button>
       </div>
       <div
-      // style={{ display: "flex", gap: 24 }}
+      style={{ width: "100%",  }}
       >
         {scripts.map((scriptObj, idx) => {
           if (scriptObj.isDismiss) {

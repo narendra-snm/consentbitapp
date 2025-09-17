@@ -139,7 +139,7 @@ type ScriptData = {
   isDismiss: boolean;
   isSaved?: boolean;
   isEditing?: boolean;
-  category: string | null;
+  category: string[];
 };
 
 
