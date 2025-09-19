@@ -17,6 +17,7 @@ import ChoosePlan from "./components/ChoosePlan";
 import AdvancedCSVExportModal from "./components/ExportDataModal";
 import OpenGuide from "./components/OpenGuide";
 import PulseAnimation from "./components/PulseAnimation";
+import InjectBodyDiv from "./components/InjectBodyDiv";
 
 framer.showUI({
   width: 800,
@@ -47,7 +48,9 @@ function useSelection() {
 const projectInfo = await framer.getProjectInfo();
 
 const siteId = projectInfo.id; 
-
+const publishInfo = await framer.getPublishInfo();
+console.log(publishInfo);
+const siteUrl = publishInfo?.production?.url || "Not Published";
 
 async function fetchScript(){
 const publishInfo = await framer.getPublishInfo();
@@ -65,12 +68,13 @@ console.log("Fetched Script Data:", data);
 //   category: [],
 // })); 
 
-const update=data.scripts.map((item:any, index: number) => ({
-  ...item,
-  category: [],
-}));
-console.log("Updated Script Data with category:", { ...data, scripts: update});
-return { ...data, scripts: update};
+// const update=data.scripts.map((item:any, index: number) => ({
+//   ...item,
+//   category: [],
+// }));
+// console.log("Updated Script Data with category:", { ...data, scripts: update});
+// return { ...data, scripts: update};
+return data;
 
 }
 export function App() {
@@ -179,7 +183,8 @@ const handleCheck = () => {
   return (
     <>
       <Header />
-   {screen === 1 &&   <MainContent onClick={() => {setScreen(2)}} setUser={setUser} user={user} loading={loading}   setLoading={setLoading} />}
+      <InjectBodyDiv/>
+   {screen === 1 &&   <MainContent siteUrl={siteUrl} siteId={siteId} onClick={() => {setScreen(2)}} setUser={setUser} user={user} loading={loading}   setLoading={setLoading} />}
      { screen === 2 &&  <ScreenTwo onClick={async () => {
   try {
     
@@ -219,7 +224,7 @@ const handleCheck = () => {
             {screen === 5 && <Screen5 onBack={() => {setScreen(4)}} onNext={() => {setScreen(6)}}/> }
   {screen === 6 && <SuccessModal onCustomize={() => { setScreen(7) }} /> }
    
-        {screen === 7 && <SettingsPanel scripts={scripts} setScripts={setScripts} /> }
+        {screen === 7 && <SettingsPanel siteId={siteId} scripts={scripts} setScripts={setScripts} /> }
      {/* <ScreenThird />
       <Screen5 />
       <SettingsPanel />

@@ -147,29 +147,44 @@ app.get("/api/fetch-scripts", async (req, res) => {
         .join(" ");
       const content = script.textContent?.trim() || "";
 
-      // Recreate the script tag, preserving all attributes and inline code
+      // Recreate the script tag
       const scriptTag = content
         ? `<script ${attrs}>${content}</script>`
         : `<script ${attrs}></script>`;
 
-      // Determine analytics category (match src and inline content)
+      // Default category array
+      let category = [];
+
+      // Check analytics patterns
       const rawData = (script.getAttribute("src") || content);
+      if (analyticsPatterns.some(p => rawData.includes(p))) {
+        category.push("analytics");
+      }
+
+      // Check for data-category attribute and split it into array
+      const dataCategory = script.getAttribute("data-category");
+      if (dataCategory) {
+        const categoriesFromAttr = dataCategory
+          .split(",")               // split by comma
+          .map(c => c.trim())        // trim spaces
+          .filter(c => c.length > 0);
+        category = [...category, ...categoriesFromAttr];
+      }
+
       return {
         script: scriptTag,
         isChanged: false,
         isDismiss: false,
         isSaved: false,
         isEditing: false,
-        category: analyticsPatterns.some(p => rawData.includes(p))
-          ? ["analytics"]
-          : [],
+        category,
       };
     });
 
     res.json({
       scripts: allScripts,
       totalScripts: allScripts.length,
-      totalAnalyticsScripts: allScripts.filter(s => s.category === "analytics").length,
+      totalAnalyticsScripts: allScripts.filter(s => s.category.includes("analytics")).length,
     });
   } catch (err) {
     console.error(err);

@@ -4,6 +4,25 @@ type User = {
   displayName: string;
   email?: string;
 };
+// utils/api.ts
+export async function saveUserData(siteId: string, userData: object|null) {
+  try {
+    console.log("Saving user data for siteId:", siteId, userData);
+    const response = await fetch("https://usersave.narendra-3c5.workers.dev/save", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ siteId, userData }),
+    });
+
+    const text = await response.text();
+    return text;
+  } catch (error) {
+    console.error("Error saving user data:", error);
+    return null;
+  }
+}
 
 const MainContent = ({
   onClick,
@@ -11,14 +30,25 @@ const MainContent = ({
   user,
   setLoading,
   loading,
+    siteId,
+    siteUrl
 }: {
   onClick: () => void;
   setUser: (user: User | null) => void;
   user: User | null;
   loading: boolean;
   setLoading: (loading: boolean) => void;
+  siteId: string;
+  siteUrl: string;
+
 }) => {
   // ✅ Fetch profile using stored JWT token
+
+
+
+
+
+
   const fetchProfile = async () => {
     setLoading(true);
     const token = localStorage.getItem("auth_token");
@@ -91,6 +121,15 @@ const MainContent = ({
  useEffect(() => {
     console.log("User state changed:", user);
       if (user) {
+async function savedata(){
+const data={
+  ...user,
+  stagingUrl: siteUrl
+}
+saveUserData(siteId, data);
+
+}
+savedata()
         onClick();
       }
     }, [user, onClick]);
