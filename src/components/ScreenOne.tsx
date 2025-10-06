@@ -8,7 +8,7 @@ type User = {
 export async function saveUserData(siteId: string, userData: object|null) {
   try {
     console.log("Saving user data for siteId:", siteId, userData);
-    const response = await fetch("https://usersave.narendra-3c5.workers.dev/save", {
+    const response = await fetch(`https://framer-consentbit.web-8fb.workers.dev/auth/user/${siteId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -17,6 +17,7 @@ export async function saveUserData(siteId: string, userData: object|null) {
     });
 
     const text = await response.text();
+    console.log("Response text:", text);
     return text;
   } catch (error) {
     console.error("Error saving user data:", error);
@@ -31,7 +32,8 @@ const MainContent = ({
   setLoading,
   loading,
     siteId,
-    siteUrl
+    siteUrl,
+    setscreen
 }: {
   onClick: () => void;
   setUser: (user: User | null) => void;
@@ -40,14 +42,91 @@ const MainContent = ({
   setLoading: (loading: boolean) => void;
   siteId: string;
   siteUrl: string;
+  setscreen: (screen: number) => void;
 
 }) => {
   // ✅ Fetch profile using stored JWT token
+//  const saveUserSite = async (userData: User, siteId: string, siteUrl: string) => {
+//     try {
+//       const token = localStorage.getItem("auth_token");
+//       if (!token) return;
 
+//       const res = await fetch(
+//         `http://127.0.0.1:8787/auth/user/${siteId}`,
+//         {
+//           method: "POST",
+//           headers: {
+//             "Content-Type": "application/json",
+//             Authorization: `Bearer ${token}`,
+//           },
+//           body: JSON.stringify({ ...userData, siteId, siteUrl }),
+//         }
+//       );
 
+//       if (!res.ok) {
+//         console.error("❌ Failed to save user site info:", await res.text());
+//         return;
+//       }
 
+//       console.log("✅ User + siteUrl saved to KV");
+//     } catch (err) {
+//       console.error("❌ Failed to save user site info:", err);
+//     }
+//   };
 
+//  const handleLogin = () => {
+//     const popup = window.open(
+//       `http://127.0.0.1:8787/auth/google?siteUrl=${encodeURIComponent(
+//         siteUrl || ""
+//       )}`,
+//       "Login with Google",
+//       "width=500,height=600"
+//     );
 
+//     const listener = async (event: MessageEvent) => {
+//       if (
+//         event.origin === "http://127.0.0.1:8787/" &&
+//         event.data?.type === "auth-success" &&
+//         event.data.token
+//       ) {
+//         const token = event.data.token;
+//         localStorage.setItem("auth_token", token);
+// setUser(event.data.user);
+//         if (event.data.user) setUser(event.data.user);
+// // 🔹 Add this line to debug
+//     console.log("Listener siteId:", siteId, "siteUrl:", siteUrl);
+//         // ✅ Save user + siteUrl to KV immediately after login
+//         if (siteId && siteUrl) {
+//           await saveUserSite(event.data.user, siteId, siteUrl);
+//         }
+
+//         popup?.close();
+//          setscreen(2);
+//         // move to ScreenTwo
+//         window.removeEventListener("message", listener);
+//       }
+//     };
+
+//     window.addEventListener("message", listener);
+//   };
+
+//   const fetchAuthMe = async (token: string) => {
+//     try {
+//       const res = await fetch("http://127.0.0.1:8787/auth/me", {
+//         headers: { Authorization: `Bearer ${token}` },
+//       });
+//       const data = await res.json();
+//       if (data.loggedIn) {
+//         setUser(data.user);
+//         setscreen(2);
+//         setLoading(false);
+//       } else {
+//         localStorage.removeItem("auth_token");
+//       }
+//     } catch (err) {
+//       console.error("❌ Error fetching /auth/me:", err);
+//     }
+//   };
 
   const fetchProfile = async () => {
     setLoading(true);
@@ -59,7 +138,7 @@ const MainContent = ({
     }
 
     try {
-      const res = await fetch("https://consentbitapp.onrender.com/auth/me", {
+      const res = await fetch("https://framer-consentbit.web-8fb.workers.dev/auth/me", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -86,7 +165,7 @@ const MainContent = ({
   // ✅ Trigger Google login popup
   const triggerGoogleLogin = () => {
     window.open(
-      "https://consentbitapp.onrender.com/auth/google",
+      "https://framer-consentbit.web-8fb.workers.dev/auth/google",
       "_blank",
       "width=500,height=600"
     );
@@ -124,7 +203,8 @@ const MainContent = ({
 async function savedata(){
 const data={
   ...user,
-  stagingUrl: siteUrl
+  stagingUrl: siteUrl,
+  test:"jj"
 }
 saveUserData(siteId, data);
 
@@ -147,7 +227,7 @@ savedata()
 
       
 
-      <button className="authorize-btn" onClick={triggerGoogleLogin}>Authorized</button>
+      <button className="authorize-btn" onClick={triggerGoogleLogin}>{loading?"Authorized":"Authorized"}</button>
      
     </div>
     </div>

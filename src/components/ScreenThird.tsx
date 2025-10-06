@@ -31,7 +31,7 @@ type ScriptData = {
 };
 const saveScripts = async (scripts: ScriptData[],siteId: string) => {
     try {
-      const response = await fetch("https://misty-violet-4982.narendra-3c5.workers.dev/", {
+      const response = await fetch("https://framer-consentbit.web-8fb.workers.dev/scripts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ siteId, scripts }),

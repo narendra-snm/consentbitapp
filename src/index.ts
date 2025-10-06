@@ -1,4 +1,4 @@
-import { blockAllScripts } from "./blockScripts";
+// import { blockAllScripts } from "./blockScripts";
 
-// This code runs in the live website where the plugin is installed
-blockAllScripts();
+// // This code runs in the live website where the plugin is installed
+// blockAllScripts();

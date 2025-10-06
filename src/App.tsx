@@ -2,7 +2,7 @@ import { framer, CanvasNode } from "framer-plugin";
 import React, { useEffect, useState } from "react";
 import Header from "./components/Header";
 import SettingsPanel from "./components/SettingsPanel";
-import LoadingScreen from "./components/LoadingScreen";
+// import LoadingScreen from "./components/LoadingScreen";
 import "./App.css";
 
 // --- Optional screens/modals ---
@@ -12,12 +12,13 @@ import ScreenThird from "./components/ScreenThird";
 import Screen5 from "./components/Screen5";
 import ConfirmModal from "./components/ConfirmModal";
 import SuccessModal from "./components/SuccessModal";
-import InstallBannerPopup from "./components/InstallBannerPopup";
-import ChoosePlan from "./components/ChoosePlan";
-import AdvancedCSVExportModal from "./components/ExportDataModal";
-import OpenGuide from "./components/OpenGuide";
+// import InstallBannerPopup from "./components/InstallBannerPopup";
+// import ChoosePlan from "./components/ChoosePlan";
+// import AdvancedCSVExportModal from "./components/ExportDataModal";
+// import OpenGuide from "./components/OpenGuide";
 import PulseAnimation from "./components/PulseAnimation";
 import InjectBodyDiv from "./components/InjectBodyDiv";
+import Categories from "./components/Categories";
 
 framer.showUI({
   width: 800,
@@ -38,6 +39,9 @@ type ScriptData = {
   isEditing?: boolean;
    category: string[];
 };
+
+
+
 function useSelection() {
   const [selection, setSelection] = useState<CanvasNode[]>([]);
   useEffect(() => {
@@ -56,7 +60,7 @@ async function fetchScript(){
 const publishInfo = await framer.getPublishInfo();
 console.log(publishInfo);
 const siteUrl = publishInfo?.production?.url || "Not Published";
-const result = await fetch(`https://consentbitapp-74kq.onrender.com/api/fetch-scripts?url=${encodeURIComponent(siteUrl)}`);
+const result = await fetch(`https://broken-term-f3f4.narendra-3c5.workers.dev/api/fetch-scripts?url=${encodeURIComponent(siteUrl)}`);
 const data = await result.json();
 console.log("Fetched Script Data:", data);
 // return data.scripts.map((item:any, index: number) => ({
@@ -77,12 +81,19 @@ console.log("Fetched Script Data:", data);
 return data;
 
 }
+
+
 export function App() {
+
+
+
+ const [injected, setInjected] = React.useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
    const [check , setCheck] = useState(false);
 const [scripts, setScripts] = useState<ScriptData[]>([])
 const [screen, setScreen] = useState(1);
+const [cookieBannerHtml, setCookieBannerHtml] = useState("");
   // ✅ Fetch profile using stored JWT token
   // const fetchProfile = async () => {
   //   setLoading(true);
@@ -134,6 +145,13 @@ const [screen, setScreen] = useState(1);
     setScreen(1);
   };
 
+    const injectHeadScript = () => {
+  if (injected) return alert(":warning: Script already injected this session");
+  const html = `<script src="https://cdn.jsdelivr.net/gh/devika2255/scripts@1894dcb/scriptinjection.js"></script>`;
+  framer.setCustomCode({ html, location: "headEnd" });
+  setInjected(true);
+  alert(":white_check_mark: Script added to project head. Republish site to apply.");
+};
   // // ✅ Listen for JWT token via postMessage
   // useEffect(() => {
   //   fetchProfile();
@@ -177,14 +195,19 @@ const [screen, setScreen] = useState(1);
   //     </div>
   //   );
   // }
+
+
+
+
+  
 const handleCheck = () => {
     setCheck(!check);
   }
   return (
     <>
       <Header />
-      <InjectBodyDiv/>
-   {screen === 1 &&   <MainContent siteUrl={siteUrl} siteId={siteId} onClick={() => {setScreen(2)}} setUser={setUser} user={user} loading={loading}   setLoading={setLoading} />}
+
+   {screen === 1 &&   <MainContent setscreen={setScreen} siteUrl={siteUrl} siteId={siteId} onClick={() => {setScreen(2)}} setUser={setUser} user={user} loading={loading}   setLoading={setLoading} />}
      { screen === 2 &&  <ScreenTwo onClick={async () => {
   try {
     
@@ -224,7 +247,12 @@ const handleCheck = () => {
             {screen === 5 && <Screen5 onBack={() => {setScreen(4)}} onNext={() => {setScreen(6)}}/> }
   {screen === 6 && <SuccessModal onCustomize={() => { setScreen(7) }} /> }
    
-        {screen === 7 && <SettingsPanel siteId={siteId} scripts={scripts} setScripts={setScripts} /> }
+        {screen === 7 && <SettingsPanel 
+        injected={injected}
+        setInjected={setInjected}
+        cookieBannerHtml={cookieBannerHtml}
+        setCookieBannerHtml={setCookieBannerHtml}
+        siteId={siteId} scripts={scripts} setScripts={setScripts} /> }
      {/* <ScreenThird />
       <Screen5 />
       <SettingsPanel />

@@ -1,5 +1,7 @@
 import { useState } from "react";
-
+import close from "../assets/close.svg"
+import copy from "../assets/copy.svg"
+import thumbnail   from "../assets/thumnIL.jpg"
 const OpenGuide = ({ onClose }: { onClose: () => void }) => {
 
 
@@ -46,7 +48,7 @@ const OpenGuide = ({ onClose }: { onClose: () => void }) => {
             aria-label="Close popup"
           >
             <img
-              src="https://67c7218243770a3d2c39fb20.webflow-ext.com/68b0e5583769195ccc356001/d455a62719b31d412041.svg"
+              src={close}
               alt="Close"
             />
           </button>
@@ -78,7 +80,7 @@ const OpenGuide = ({ onClose }: { onClose: () => void }) => {
                 </p>
                 <button onClick={() => handleCopy("consentbit-data-donotshare")}>
                 <img
-                  src="https://67c7218243770a3d2c39fb20.webflow-ext.com/68b0e5583769195ccc356001/8a025792224011a9b33d.svg"
+                  src={copy}
                   alt="Copy"
                   title="Copy text"
                   style={{
@@ -114,7 +116,7 @@ const OpenGuide = ({ onClose }: { onClose: () => void }) => {
                 </p>
                 <button onClick={() => handleCopy("consentbit-link-donotshare")}>
                 <img
-                  src="https://67c7218243770a3d2c39fb20.webflow-ext.com/68b0e5583769195ccc356001/8a025792224011a9b33d.svg"
+                  src={copy}
                   alt="Copy"
                   title="Copy text"
                   style={{
@@ -199,7 +201,7 @@ const OpenGuide = ({ onClose }: { onClose: () => void }) => {
                 <div>
                   <a target="_blank" rel="noopener noreferrer" href="https://vimeo.com/1107523507">
                     <img
-                      src="https://67c7218243770a3d2c39fb20.webflow-ext.com/68b0e5583769195ccc356001/e1e9028fefd1f05424b9.jpg"
+                      src={thumbnail }
                       alt=""
                       style={{ marginBottom: 5, width: 118, height: 70 }}
                     />

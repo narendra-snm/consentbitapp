@@ -1,4 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
+import tutorial from "../assets/watchtutorial.svg"
+import checkdocs from "../assets/checkdocs.svg"
+import getsupport from "../assets/getsupport.svg"
+import savefeedback from "../assets/savefeedback.svg"
 
 interface HelpLink {
   href: string;
@@ -9,22 +13,22 @@ interface HelpLink {
 const HELP_LINKS: HelpLink[] = [
   {
     href: "https://vimeo.com/1090979483/99f46cddbf",
-    icon: "https://67c7218243770a3d2c39fb20.webflow-ext.com/68b0e5583769195ccc356001/66fe4eed25e95e73e315.svg",
+    icon: tutorial,
     text: "Watch tutorial",
   },
   {
     href: "https://www.consentbit.com/help-document",
-    icon: "https://67c7218243770a3d2c39fb20.webflow-ext.com/68b0e5583769195ccc356001/d7bb4f2db06855167505.svg",
+    icon: checkdocs,
     text: "Check docs",
   },
   {
     href: "https://www.consentbit.com/contact",
-    icon: "https://67c7218243770a3d2c39fb20.webflow-ext.com/68b0e5583769195ccc356001/cfe60e65bedc27b23258.svg",
+    icon: getsupport,
     text: "Get support",
   },
   {
     href: "https://www.consentbit.com/contact",
-    icon: "https://67c7218243770a3d2c39fb20.webflow-ext.com/68b0e5583769195ccc356001/68a1fe2d8c3940dbf237.svg",
+    icon: savefeedback,
     text: "Send feedback",
   },
 ];

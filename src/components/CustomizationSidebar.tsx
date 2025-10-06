@@ -315,7 +315,7 @@ const CustomizationSidebar: React.FC<CustomizationSidebarProps> = ({
     <div className="settings-label" style={{ marginTop: 17 }}>
       Typography <QuestionMark  hoverText="Customize font styles and sizes to enhance readability and design." />
     </div>
-    <div style={{position:"relative"}}>
+    <div style={{position:"relative"}} className="settings-row">
        <svg
         className={`dropdown-icon ${open ? "open" : ""}`}
         width="12"
