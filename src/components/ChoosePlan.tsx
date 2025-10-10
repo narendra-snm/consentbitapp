@@ -75,7 +75,7 @@ const ChoosePlan: React.FC<ChoosePlanProps> = ({ onClose }) => {
               <button
                 className="choose-plan-cta"
                 onClick={() => {
-                  const url = isAnnual ? "https://buy.stripe.com/aFa3cw5xtfv49xTeEYds403" : "https://buy.stripe.com/fZubJ2aRNer0h0l8gAds401";
+                  const url = isAnnual ? "https://buy.stripe.com/eVq28sf835UuaBXfJ2ds405" : "https://buy.stripe.com/aFafZie3Z6Yy39vbsMds404";
                   window.open(url, "_blank");
                 }}
               >

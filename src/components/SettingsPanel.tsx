@@ -45,7 +45,16 @@ interface SettingsState {
   customtoggle: boolean;
   privacyUrl: string;
 }
-
+async function getBannerSettings(siteId: string) {
+  try {
+    const res = await fetch(`https://framer-consentbit.web-8fb.workers.dev/banner/get/${siteId}`);
+    if (!res.ok) throw new Error("Fetch failed");
+    return await res.json();
+  } catch (err) {
+    console.error("Error fetching banner settings:", err);
+    return null;
+  }
+}
 async function saveBannerSettings(siteId: string, bannerData: any) {
   try {
     const res = await fetch("https://framer-consentbit.web-8fb.workers.dev/banner/save", {
@@ -343,7 +352,12 @@ type ScriptData = {
   isEditing?: boolean;
   category: string[];
 };
-
+type User = {
+  id: string;
+  displayName: string;
+  email?: string;
+  isPublihsed?: boolean;
+};
 interface SettingsPanelProps {
   scripts: ScriptData[];
   siteId: string;
@@ -352,6 +366,7 @@ interface SettingsPanelProps {
   setCookieBannerHtml: React.Dispatch<React.SetStateAction<string>>;
   setInjected: React.Dispatch<React.SetStateAction<boolean>>;
   injected: boolean;
+  user: User | null;
 }
 
 const SettingsPanel: React.FC<SettingsPanelProps> = ({
@@ -360,6 +375,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   setScripts,
   cookieBannerHtml,
   setCookieBannerHtml,
+  user,
   setInjected,
   injected
 }) => {
@@ -436,6 +452,19 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
       checkedCategories,
     });
   }, [activeTab, settings, compliance, customization, checkedCategories]);
+useEffect(() => {
+async function fetchData() {
+ const data = await getBannerSettings(siteId);
+ if (!data) return;
+console.log("Fetched Banner Settings:", data);
+ // Defensive parsing, fallback to defaults if needed
+ if (data.settings) setSettings(data.settings);
+ if (data.compliance) setCompliance(data.compliance);
+ if (data.customization) setCustomizationRaw(data.customization); // Use setCustomizationRaw directly for full object
+ if (data.checkedCategories) setCheckedCategories(data.checkedCategories);
+ }
+ fetchData();
+}, [siteId]);
 
   return (
     <div className="settings-root">
@@ -461,7 +490,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             }}
             className="settings-publish-btn"
           >
-            Create Component
+           {user?.isPublihsed ? "Update banner" : "Publish banner"}
           </button>
         )}
       </div>

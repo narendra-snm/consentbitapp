@@ -645,86 +645,14 @@ const prefrenceHtml=`${ isAnalyticsChecked ? `<div>
                ${finalTranslations[settings.language].sections.preferences.description}
               </p>
             </div>`:""}`
-console.log( `${ isAnalyticsChecked ? `<div>
-              <div class="consentbit-prefrence_toggle">
-                <p class="consentbit-button-preference">Analytics</p>
-                <label
-                  id="analytics-checkbox"
-                   ${settings.customtoggle ? `customtoggle="true"`: ""}
-                  class="w-checkbox consentbit-toggle"
-                  ><input
-                    type="checkbox"
-                    id="checkbox-2"
-                    name="checkbox-2"
-                    data-name="Checkbox 2"
-                    data-consent-id="analytics-checkbox"
-                    class="w-checkbox-input" /><span
-                    class="w-form-label"
-                    for="checkbox-2"
-                  ></span
-                ></label>
-              </div>
-              <p class="consentbit-prefrence_text">
-                These cookies collect anonymous data to help us improve website
-                functionality and enhance user experience.
-              </p>
-            </div>`: ""}
-           ${ isMarketing ? `<div>
-              <div class="consentbit-prefrence_toggle">
-                <p class="consentbit-button-preference">Marketing</p>
-                <label
-                  id="marketing-checkbox"
-                ${settings.customtoggle ? `customtoggle="true"`: ""}
-                  class="w-checkbox consentbit-toggle"
-                  ><input
-                    type="checkbox"
-                    id="checkbox-3"
-                    name="checkbox-3"
-                    data-name="Checkbox 3"
-                    data-consent-id="marketing-checkbox"
-                    class="w-checkbox-input" /><span
-                    class="w-form-label"
-                    for="checkbox-3"
-                  ></span
-                ></label>
-              </div>
-              <p class="consentbit-prefrence_text">
-                These cookies track users across websites to deliver relevant
-                ads and may process personal data, requiring explicit consent.
-              </p>
-            </div>`:""}
-           ${ isPreferences ?` <div>
-              <div class="consentbit-prefrence_toggle">
-                <p class="consentbit-button-preference">Preferences</p>
-                <label
-                  id="personalization-checkbox"
-                   ${settings.customtoggle ? `customtoggle="true"`: ""}
-                  class="w-checkbox consentbit-toggle"
-                  ><input
-                    type="checkbox"
-                    id="checkbox-5"
-                    name="checkbox-5"
-                    data-name="Checkbox 5"
-                    data-consent-id="personalization-checkbox"
-                    class="w-checkbox-input" /><span
-                    class="w-form-label"
-                    for="checkbox-5"
-                  ></span
-                ></label>
-              </div>
-              <p class="consentbit-prefrence_text">
-                These cookies remember settings like language or region and
-                store display preferences to offer a more personalized, seamless
-                experience.
-              </p>
-            </div>`:""}`)
+
 
             
   const cookiePreviewHTML = `
 
 
 
-
+<div id="banner-code">
 
 <style>
 
@@ -1099,7 +1027,7 @@ console.log( `${ isAnalyticsChecked ? `<div>
     cursor: pointer;
     -webkit-appearance: none;
     appearance: none;
-    background-color: #fff;
+    background-color: transparent;
     border-radius: 4px;
     width: 20px;
     height: 20px;
@@ -1741,8 +1669,10 @@ id="consent-banner"
 </div>
 <div id="consensite-id">${siteId}</div>
 <div id="toggle-consent-btn" scroll-control="true" class="consentbit-change-preference"></div>
-<script src="https://cdn.jsdelivr.net/gh/naren4545/script@8bc7a57/script.js"></script>
-`;
+<script src="https://cdn.jsdelivr.net/gh/naren4545/script@baec9cd/script.js" ></script>
+<div>
+`
+;
 
   useEffect(() => {
     console.log("Updating cookie banner HTML");

@@ -1487,7 +1487,7 @@ input.settings-input {
 .color-picker-button {
   border: none;
   background: transparent;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 8px;
   display: flex;
   align-items: center;
   gap: 0.5rem;

@@ -104,15 +104,18 @@ type ColorPickerDropdownProps = {
    className : string;
 };
 
+
+
 export const ColorPickerDropdown: React.FC<ColorPickerDropdownProps> = ({
   label,
   value,
   onChange,
-   className = "",
+  className = "",
 }) => {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -133,28 +136,47 @@ export const ColorPickerDropdown: React.FC<ColorPickerDropdownProps> = ({
   return (
     <div>
       <span>{label}</span>
-      <div className={`color-picker-dropdown${className ? ` ${className}` : ""}`}  ref={containerRef}>
+      <div
+        className={`color-picker-dropdown${className ? ` ${className}` : ""}`}
+        ref={containerRef}
+      >
         <button
           className="color-picker-button"
           type="button"
           onClick={() => setOpen((v) => !v)}
+          style={{ display: "flex", alignItems: "center", gap: 8 }}
         >
-          <span className="color-text">{value}</span>
-          <div className="color-preview" style={{ backgroundColor: value }} />
+          <input
+            type="text"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            spellCheck={false}
+            style={{
+              width:"70%",
+              padding: "0",
+              background: "transparent",
+            }}
+            
+          />
+          <div
+            className="color-preview"
+            style={{
+              backgroundColor: value,
+              
+            }}
+          />
         </button>
         <div className={`color-picker-container${open ? "" : " hidden"}`}>
-          {/* Custom palette that allows dragging & picking */}
           <HexColorPicker
             color={value}
             onChange={onChange}
-            style={{ width: "180px", height: "180px" }}
+            style={{ width: 180, height: 180 }}
           />
         </div>
       </div>
     </div>
   );
 };
-
 function CustomColors({ customization, setCustomization }: CustomColorsProps) {
   
   const { colors } = customization;

@@ -17,8 +17,8 @@ import SuccessModal from "./components/SuccessModal";
 // import AdvancedCSVExportModal from "./components/ExportDataModal";
 // import OpenGuide from "./components/OpenGuide";
 import PulseAnimation from "./components/PulseAnimation";
-import InjectBodyDiv from "./components/InjectBodyDiv";
-import Categories from "./components/Categories";
+// import InjectBodyDiv from "./components/InjectBodyDiv";
+// import Categories from "./components/Categories";
 
 framer.showUI({
   width: 800,
@@ -30,6 +30,7 @@ type User = {
   id: string;
   displayName: string;
   email?: string;
+  isPublihsed?: boolean;
 };
 type ScriptData = {
   script: string;
@@ -42,13 +43,13 @@ type ScriptData = {
 
 
 
-function useSelection() {
-  const [selection, setSelection] = useState<CanvasNode[]>([]);
-  useEffect(() => {
-    return framer.subscribeToSelection(setSelection);
-  }, []);
-  return selection;
-}
+// function useSelection() {
+//   const [selection, setSelection] = useState<CanvasNode[]>([]);
+//   useEffect(() => {
+//     return framer.subscribeToSelection(setSelection);
+//   }, []);
+//   return selection;
+// }
 const projectInfo = await framer.getProjectInfo();
 
 const siteId = projectInfo.id; 
@@ -60,7 +61,7 @@ async function fetchScript(){
 const publishInfo = await framer.getPublishInfo();
 console.log(publishInfo);
 const siteUrl = publishInfo?.production?.url || "Not Published";
-const result = await fetch(`https://broken-term-f3f4.narendra-3c5.workers.dev/api/fetch-scripts?url=${encodeURIComponent(siteUrl)}`);
+const result = await fetch(`https://framer-consentbit.web-8fb.workers.dev/api/fetch-scripts?url=${encodeURIComponent(siteUrl)}`);
 const data = await result.json();
 console.log("Fetched Script Data:", data);
 // return data.scripts.map((item:any, index: number) => ({
@@ -207,7 +208,11 @@ const handleCheck = () => {
     <>
       <Header />
 
-   {screen === 1 &&   <MainContent setscreen={setScreen} siteUrl={siteUrl} siteId={siteId} onClick={() => {setScreen(2)}} setUser={setUser} user={user} loading={loading}   setLoading={setLoading} />}
+   {screen === 1 &&   <MainContent setscreen={setScreen} siteUrl={siteUrl} siteId={siteId} onClick={() => {
+   console.log("User state in onClick:", user);
+   user?.isPublihsed?setScreen(7) : setScreen(2)
+
+    }} setUser={setUser} user={user} loading={loading}   setLoading={setLoading} />}
      { screen === 2 &&  <ScreenTwo onClick={async () => {
   try {
     
@@ -248,6 +253,7 @@ const handleCheck = () => {
   {screen === 6 && <SuccessModal onCustomize={() => { setScreen(7) }} /> }
    
         {screen === 7 && <SettingsPanel 
+        user={user}
         injected={injected}
         setInjected={setInjected}
         cookieBannerHtml={cookieBannerHtml}
@@ -264,7 +270,7 @@ const handleCheck = () => {
       <SuccessModal /> */}
       
  
-     {user && <div style={{ marginTop: "20px", textAlign: "center" }}>
+     {/* {user && <div style={{ marginTop: "20px", textAlign: "center" }}>
         <p>
           ✅ Logged in as <b>{user.displayName}</b> ({user.email})
         </p>
@@ -282,7 +288,7 @@ const handleCheck = () => {
         >
           Logout
         </button>
-      </div>}
+      </div>} */}
     </>
   );
 }

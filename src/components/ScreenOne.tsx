@@ -3,6 +3,7 @@ type User = {
   id: string;
   displayName: string;
   email?: string;
+  isPublished?: boolean;
 };
 // utils/api.ts
 export async function saveUserData(siteId: string, userData: object|null) {
@@ -128,7 +129,7 @@ const MainContent = ({
 //     }
 //   };
 
-  const fetchProfile = async () => {
+  const fetchProfile = async (siteId: string) => {
     setLoading(true);
     const token = localStorage.getItem("auth_token");
     if (!token) {
@@ -138,7 +139,7 @@ const MainContent = ({
     }
 
     try {
-      const res = await fetch("https://framer-consentbit.web-8fb.workers.dev/auth/me", {
+      const res = await fetch(`https://framer-consentbit.web-8fb.workers.dev/auth/me?siteId=${siteId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -146,8 +147,8 @@ const MainContent = ({
       const data = await res.json();
 
       if (data.loggedIn) {
-        console.log("✅ User is logged in:", data.user);
-        setUser(data.user);
+        console.log("✅ User is logged in:", data);
+        setUser({...data.user, isPublihsed: data.isPublished});
       } else {
         console.log("⚠️ Token invalid or expired");
         setUser(null);
@@ -179,7 +180,7 @@ const MainContent = ({
 
   // ✅ Listen for JWT token via postMessage
   useEffect(() => {
-    fetchProfile();
+    fetchProfile(siteId);
 
     const listener = (event: MessageEvent) => {
       console.log("📩 Message received:", event.origin, event.data);
@@ -189,7 +190,7 @@ const MainContent = ({
         const token = event.data.token;
         localStorage.setItem("auth_token", token);
         console.log("✅ Token received and saved:", token);
-        fetchProfile(); // refresh
+        fetchProfile(siteId); // refresh
       }
     };
 
@@ -199,14 +200,15 @@ const MainContent = ({
 
  useEffect(() => {
     console.log("User state changed:", user);
-      if (user) {
+      if (user ) {
 async function savedata(){
 const data={
   ...user,
   stagingUrl: siteUrl,
   test:"jj"
 }
-saveUserData(siteId, data);
+user?.isPublished
+ && await saveUserData(siteId, data);
 
 }
 savedata()

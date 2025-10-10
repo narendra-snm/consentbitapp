@@ -22,43 +22,47 @@ const ExportDataModal: FC<ExportDataModalProps> = ({ onClose, siteId }) => {
   const [error, setError] = useState<string>("");
 
   // Helper to fetch visitor data filtered by month/year
- const fetchVisitorData = async (siteId: string, month: number, year: number) => {
-  setIsLoading(true);
-  setError("");
-  try {
-    const res = await fetch(
-      `https://framer-consentbit.web-8fb.workers.dev/consent/${encodeURIComponent(siteId)}`
-    );
-    if (!res.ok) {
-      throw new Error(`Failed to fetch: ${res.status} ${res.statusText}`);
-    }
-    const data = await res.json();
-
-    const filteredData = (data || []).filter((entry: any) => {
-      if (!entry.timestamp) return false;
-      const date = new Date(entry.timestamp);
-      return (
-        date.getUTCFullYear() === year &&
-        date.getUTCMonth() === month // month is zero-based
+  const fetchVisitorData = async (
+    siteId: string,
+    month: number,
+    year: number
+  ) => {
+    setIsLoading(true);
+    setError("");
+    try {
+      const res = await fetch(
+        `https://framer-consentbit.web-8fb.workers.dev/consent/${encodeURIComponent(
+          siteId
+        )}`
       );
-    });
+      if (!res.ok) {
+        throw new Error(`Failed to fetch: ${res.status} ${res.statusText}`);
+      }
+      const data = await res.json();
 
-    const visitorArr = filteredData.map((entry: any) => ({
-      visitorId: entry.visitorId,
-      timestamp: entry.timestamp,
-      status: entry.preferences?.action || "Unknown",
-      pdfUrl: `https://framer-consentbit.web-8fb.workers.dev/visitor-report/${siteId}/${entry.visitorId}?format=pdf`,
-    }));
+      const filteredData = (data || []).filter((entry: any) => {
+        if (!entry.timestamp) return false;
+        const date = new Date(entry.timestamp);
+        return (
+          date.getUTCFullYear() === year && date.getUTCMonth() === month // month is zero-based
+        );
+      });
 
-    setVisitorData(visitorArr);
-  } catch (e: any) {
-    setError(e.message || "Unknown error");
-    setVisitorData([]);
-  } finally {
-    setIsLoading(false);
-  }
-};
+      const visitorArr = filteredData.map((entry: any) => ({
+        visitorId: entry.visitorId,
+        timestamp: entry.timestamp,
+        status: entry.preferences?.action || "Unknown",
+        pdfUrl: `https://framer-consentbit.web-8fb.workers.dev/visitor-report/${siteId}/${entry.visitorId}?format=pdf`,
+      }));
 
+      setVisitorData(visitorArr);
+    } catch (e: any) {
+      setError(e.message || "Unknown error");
+      setVisitorData([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Fetch data on month or year change or siteId change
   useEffect(() => {
@@ -109,7 +113,7 @@ const ExportDataModal: FC<ExportDataModalProps> = ({ onClose, siteId }) => {
                   "September",
                   "October",
                   "November",
-                  "December"
+                  "December",
                 ].map((monthName, idx) => (
                   <option value={idx} key={monthName}>
                     {monthName}
@@ -150,7 +154,20 @@ const ExportDataModal: FC<ExportDataModalProps> = ({ onClose, siteId }) => {
           {/* Visitor Data Table or Empty State */}
           {visitorData.length > 0 ? (
             <div className="visitor-data-section">
-              <h3>Available Consent Reports</h3>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                {" "}
+                <h3>Available Consent Reports</h3>{" "}
+                <button
+                  className="action-btn primary"
+                  onClick={() =>
+                    handleDownloadPDF(
+                      `https://framer-consentbit.web-8fb.workers.dev/consent-report?siteId=${siteId}&month=${month+1}&year=${year}`
+                    )
+                  }
+                >
+                  download csv
+                </button>
+              </div>
               <div className="visitor-data-table">
                 <div className="table-header">
                   <div className="header-cell">Visitor ID</div>
@@ -173,7 +190,9 @@ const ExportDataModal: FC<ExportDataModalProps> = ({ onClose, siteId }) => {
                         <div className="table-cell">{visitor.visitorId}</div>
                         <div className="table-cell">{formattedDate}</div>
                         <div className="table-cell">
-                          <span className={`status-badge ${visitor.status.toLowerCase()}`}>
+                          <span
+                            className={`status-badge ${visitor.status.toLowerCase()}`}
+                          >
                             {visitor.status}
                           </span>
                         </div>
@@ -205,7 +224,8 @@ const ExportDataModal: FC<ExportDataModalProps> = ({ onClose, siteId }) => {
                     No visitor data available for the selected period.
                   </div>
                   <div className="empty-subtitle">
-                    Try selecting a different month or year, or check back later for new consent data.
+                    Try selecting a different month or year, or check back later
+                    for new consent data.
                   </div>
                 </div>
               </div>
