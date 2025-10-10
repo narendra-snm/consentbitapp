@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 type User = {
   id: string;
   displayName: string;
@@ -46,6 +46,7 @@ const MainContent = ({
   setscreen: (screen: number) => void;
 
 }) => {
+  const [newUser, setNewUser] = useState<User | null>(null);
   // ✅ Fetch profile using stored JWT token
 //  const saveUserSite = async (userData: User, siteId: string, siteUrl: string) => {
 //     try {
@@ -179,39 +180,59 @@ const MainContent = ({
   };
 
   // ✅ Listen for JWT token via postMessage
+  // ✅ Listen for JWT token via postMessage
   useEffect(() => {
-    fetchProfile(siteId);
+    // Only fetch profile if token exists (for returning users)
+    const existingToken = localStorage.getItem("auth_token");
+    if (existingToken) {
+      fetchProfile(siteId);
+    } else {
+      setLoading(false);
+    }
 
-    const listener = (event: MessageEvent) => {
+    const listener = async (event: MessageEvent) => {
       console.log("📩 Message received:", event.origin, event.data);
 
-      // Expecting: { type: "auth-success", token: "..." }
+      // Expecting: { type: "auth-success", token: "...", user: {...} }
       if (event.data?.type === "auth-success" && event.data.token) {
         const token = event.data.token;
+        const userData = event.data.user;
+        
         localStorage.setItem("auth_token", token);
         console.log("✅ Token received and saved:", token);
-        fetchProfile(siteId); // refresh
+        
+        // For new users, save data first, then fetch profile
+        if (userData) {
+          const data = {
+            ...userData,
+            stagingUrl: siteUrl,
+          };
+          await saveUserData(siteId, data);
+        }
+        
+        // Now fetch profile (should work for both new and existing users)
+        fetchProfile(siteId);
       }
     };
 
     window.addEventListener("message", listener);
     return () => window.removeEventListener("message", listener);
-  }, []);
+  }, [siteId]);
 
  useEffect(() => {
     console.log("User state changed:", user);
       if (user ) {
-async function savedata(){
-const data={
-  ...user,
-  stagingUrl: siteUrl,
-  test:"jj"
-}
-user?.isPublished
- && await saveUserData(siteId, data);
+// async function savedata(){
+// const data={
+//   ...user,
+//   stagingUrl: siteUrl,
+//   test:"jj"
+// }
+// user?.isPublished
+//  && await saveUserData(siteId, data);
 
-}
-savedata()
+// }
+// savedata()
         onClick();
       }
     }, [user, onClick]);

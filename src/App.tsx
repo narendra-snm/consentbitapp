@@ -197,7 +197,23 @@ const [cookieBannerHtml, setCookieBannerHtml] = useState("");
   //   );
   // }
 
-
+// const scanScripts = async () => {
+//   try {
+//     setLoading(true);
+//     const data = await fetchScript();
+//     console.log("Fetched Script Data in useEffect:", data);
+//     if (data && data.scripts) {
+//       setScripts(data.scripts);
+//     } else {
+//       console.warn("No scripts found in response:", data);
+//     }
+//   } catch (error) {
+//     console.error("Error fetching scripts:", error);
+//   } finally {
+//     // always runs, whether success or error
+//     setLoading(false);
+//   }
+// };
 
 
   
@@ -208,10 +224,31 @@ const handleCheck = () => {
     <>
       <Header />
 
-   {screen === 1 &&   <MainContent setscreen={setScreen} siteUrl={siteUrl} siteId={siteId} onClick={() => {
+   {screen === 1 &&   <MainContent setscreen={setScreen} siteUrl={siteUrl} siteId={siteId} onClick={async() => {
    console.log("User state in onClick:", user);
-   user?.isPublihsed?setScreen(7) : setScreen(2)
+   if(user?.isPublihsed){
+try {
+    
+    setLoading(true);
 
+    const data = await fetchScript();
+    console.log("Fetched Script Data in useEffect:", data);
+
+    if (data && data.scripts) {
+      setScripts(data.scripts);
+      
+    } else {
+      console.warn("No scripts found in response:", data);
+    }
+  } catch (error) {
+    console.error("Error fetching scripts:", error);
+  } finally {
+    // always runs, whether success or error
+    setLoading(false);
+  }
+   }
+  //  user?.isPublihsed?setScreen(7) : setScreen(2)
+setScreen(2)
     }} setUser={setUser} user={user} loading={loading}   setLoading={setLoading} />}
      { screen === 2 &&  <ScreenTwo onClick={async () => {
   try {

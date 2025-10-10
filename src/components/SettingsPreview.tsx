@@ -1377,7 +1377,7 @@ const prefrenceHtml=`${ isAnalyticsChecked ? `<div>
 </style>
 <div
 id="consent-banner"
-  class="cookie-preview consentbit-gdpr-banner-div consentbit-gdpr_banner_div"
+  class="cookie-preview consentbit-gdpr-banner-div hidden consentbit-gdpr_banner_div"
   ${settings.disableScroll ? "data-cookie-banner= true" : ""}
  data-animation="${settings.animation.toLowerCase()}"
   style="display:flex; position:fixed;  z-index:9999999;${positionStyles}"
