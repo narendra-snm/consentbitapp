@@ -3,7 +3,7 @@ import cookieBanner from "../assets/cookies_banner.png";
 import coupon from "../assets/Subtract.png";
 import copy from "../assets/fi-rr-copy (1).png";
 
-const Screen5 = ({onBack, onNext}:{onBack: () => void; onNext: () => void}) => {
+const Screen5 = ({onBack, onNext,onPublish}:{onBack: () => void;onPublish: () => void; onNext: () => void}) => {
   const [showToast, setShowToast] = useState(false);
   const couponCode = "ABCDEFG";
 
@@ -68,7 +68,7 @@ const Screen5 = ({onBack, onNext}:{onBack: () => void; onNext: () => void}) => {
           </span>
         </div>
 
-        <button className="screen5-publish-btn">Publish</button>
+        <button className="screen5-publish-btn" onClick={onPublish}>Publish</button>
         <a className="screen5-customize-link" onClick={onNext}>
           Customize →
         </a>
