@@ -287,7 +287,7 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({
           />
           <CustomCheckbox
             checked={compliance.includes("gdpr")}
-            onCheck={() => handleComplianceChange("gdpr")}
+            onCheck={() => console.log("GDPR checkbox clicked") }
             label="GDPR"
             tick={tick}
             tick2={tick2}
