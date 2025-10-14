@@ -1,7 +1,7 @@
 import { CustomizationState } from "./CustomizationSidebar";
 import logo from "../assets/icon.svg";
 import dots from "../assets/threedots.svg";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
  type CategoryCheckedState = {
   name: string;
   checked: boolean;
@@ -463,10 +463,11 @@ const finalTranslations = {
     }
   }
 };
-
+type ComplianceType = "us" | "gdpr";
 const SettingsPreview = ({
   customization,
   settings,
+  compliance,
   cookieBannerHtml,
   siteId,
   checkedCategories,
@@ -477,7 +478,8 @@ const SettingsPreview = ({
   cookieBannerHtml: string;
   checkedCategories:CategoryCheckedState[];
   setCookieBannerHtml: React.Dispatch<React.SetStateAction<string>>;
-  siteId: string
+  siteId: string;
+  compliance: ComplianceType[];
 }) => {
   // Default fallback for non-customization tab
   const custom = customization || {
@@ -646,7 +648,7 @@ const prefrenceHtml=`${ isAnalyticsChecked ? `<div>
               </p>
             </div>`:""}`
 
-
+console.log(compliance.length  ,compliance.includes("gdpr"));
             
   const cookiePreviewHTML = `
 
@@ -1081,7 +1083,7 @@ const prefrenceHtml=`${ isAnalyticsChecked ? `<div>
     justify-content: center;
     align-items: center;
     width: ${widthHtml};
-    min-height: 220px;
+    
     padding: 20px;
     font-family: ${custom.font};
     display: none;
@@ -1377,10 +1379,10 @@ const prefrenceHtml=`${ isAnalyticsChecked ? `<div>
 </style>
 <div
 id="consent-banner"
-  class="cookie-preview consentbit-gdpr-banner-div hidden consentbit-gdpr_banner_div"
+  class="cookie-preview  consentbit-gdpr-banner-div hidden consentbit-gdpr_banner_div"
   ${settings.disableScroll ? "data-cookie-banner= true" : ""}
  data-animation="${settings.animation.toLowerCase()}"
-  style="display:flex; position:fixed;  z-index:9999999;${positionStyles}"
+  style=" position:fixed;  z-index:9999999;${positionStyles}"
 >
  ${ settings.showCloseButton ? `<p consentbit="close" class="close-consent">X</p>`:""}
   <div
@@ -1438,12 +1440,12 @@ id="consent-banner"
   </div>
 </div>
 
-<div
-  class="cookie-preview-CCPA-banner consentbit-ccpa-banner-div"
+${(compliance.length === 1 && compliance.includes("gdpr"))?"":`<div
+  class="cookie-preview-CCPA-banner hidden consentbit-ccpa-banner-div"
   data-animation="${settings.animation}"
     ${settings.disableScroll ? "data-cookie-banner= true" : ""}
   id="initial-consent-banner"
-  style="display:flex; position:fixed;  z-index:99999;${positionStyles}"
+  style=" position:fixed;  z-index:99999;${positionStyles}"
 >
    ${ settings.showCloseButton ? `<p consentbit="close" class="close-consent">X</p>`:""}
   <div
@@ -1464,7 +1466,7 @@ id="consent-banner"
   >
         ${ custom.bannerStyle==="style2" ?`<div class="consentbit-banner_second-bg"></div>`:""}
 
-    <p consentbit="close" class="close-consent">X</p>
+    
     <div
       class="cookie-title"
       style="color:${custom.colors.title};font-weight:600;margin-bottom:16px;"
@@ -1484,9 +1486,9 @@ id="consent-banner"
     </div>
   </div>
 </div>
-
+          ` }
 <!-- Preference Panel -->
-<div id="main-banner" class="consentbit-preference show-banner">
+<div id="main-banner" class="consentbit-preference hidden">
   <div
 
   ${settings.disableScroll ? `data-cookie-banner= "true"` : ""}
@@ -1582,11 +1584,11 @@ id="consent-banner"
   </div>
 </div>
 
-<div
+${(compliance.length === 1 && compliance.includes("gdpr")) ?"":`<div
   id="main-consent-banner"
   data-animation="${settings.animation}"
    ${settings.disableScroll ? "data-cookie-banner= true" : ""}
-  class="consentbit-ccpa_preference show-banner"
+  class="consentbit-ccpa_preference hidden"
   style="visibility: visible !important; opacity: 1 !important"
 >
   <h4 class="consebit-ccpa-prefrence-heading">${ccpaTranslations[settings.language]?.heading || "CCPA Preferences"}</h4>
@@ -1666,14 +1668,16 @@ id="consent-banner"
     >
   </div>
   <p consentbit="close" class="consent-close">X</p>
-</div>
-<div id="consensite-id">${siteId}</div>
+</div>`
+}
+<div id="consensite-id" style="display:none">${siteId}</div>
+<div id="consensite-banner-type" style="display:none">${(compliance.length === 1 && compliance.includes("gdpr"))?"gdpr":"ccpa"}</div>
 <div id="toggle-consent-btn" scroll-control="true" class="consentbit-change-preference"></div>
-<script src="https://cdn.jsdelivr.net/gh/naren4545/script@baec9cd/script.js" ></script>
+<script src="https://cdn.jsdelivr.net/gh/naren4545/script@8b95066/script.js" ></script>
 <div>
 `
 ;
-
+ const [selectedBannerType, setSelectedBannerType] = useState("gdpr");
   useEffect(() => {
     console.log("Updating cookie banner HTML");
     setCookieBannerHtml(cookiePreviewHTML);
@@ -1681,9 +1685,40 @@ id="consent-banner"
 
   return (
     <div className="settings-preview-main">
-      <div className="settings-preview-header">Preview</div>
+      <div className="settings-preview-header" style={{ display: "flex", alignItems: "center" }}>
+        Preview
+        <div style={{ marginLeft: "auto", display: "flex", gap: 10 }}>
+          <button
+            onClick={() => setSelectedBannerType("gdpr")}
+            style={{
+              padding: "6px 20px",
+              color: selectedBannerType === "gdpr" ? "#1d5aff" : "#333",
+              borderRadius: 6,
+              border: selectedBannerType === "gdpr" ? "2px solid #1d5aff" : "1px solid #ccc",
+              background: selectedBannerType === "gdpr" ? "#eef5ff" : "#fff",
+              fontWeight: selectedBannerType === "gdpr" ? "bold" : "normal",
+              cursor: "pointer"
+            }}
+          >
+            GDPR
+          </button>
+          <button
+            onClick={() => setSelectedBannerType("ccpa")}
+            style={{
+              padding: "6px 20px",
+               color: selectedBannerType === "ccpa" ? "#1d5aff" : "#333",
+              borderRadius: 6,
+              border: selectedBannerType === "ccpa" ? "2px solid #1d5aff" : "1px solid #ccc",
+              background: selectedBannerType === "ccpa" ? "#eef5ff" : "#fff",
+              fontWeight: selectedBannerType === "ccpa" ? "bold" : "normal",
+              cursor: "pointer"
+            }}
+          >
+            CCPA
+          </button>
+        </div>
+      </div>
       <div className="settings-preview-content">
-        {/* Placeholder for browser window & cookie setting sample */}
         <div className="browser-mockup">
           <div className="browser-bar">
             <img
@@ -1692,86 +1727,149 @@ id="consent-banner"
               style={{ width: 20, height: 20, marginLeft: 10 }}
             />
           </div>
-          <div
-            className="cookie-preview"
-            style={{ justifyContent: bannerAlignment }}
-          >
+          {/* Content based on banner type */}
+          {selectedBannerType === "gdpr" ? (
             <div
-              className="cookie-preview-popup"
-              style={{
-                textAlign: custom.textAlignment,
-                width: width,
-                fontFamily: custom.font,
-                fontWeight: fontWeight,
-                fontSize: custom.size,
-                borderRadius: custom.radius.container,
-                backgroundColor: custom.colors.bannerBg,
-                color: custom.colors.body,
-                position: "relative",
-                 ...animationStyle
-              }}
+              className="cookie-preview"
+              style={{ justifyContent: bannerAlignment }}
             >
-              {custom.bannerStyle==="style2" &&<div
-  style={{
-    zIndex: -3,
-    opacity: 0.3,
-    backgroundColor: custom.colors.bannerBg2,
-    borderTopRightRadius: 4,
-    borderBottomRightRadius: 4,
-    width: "35%",
-    height: "100%",
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-  }}
-></div>}
               <div
-                className="cookie-title"
-                style={{ color: custom.colors.title }}
+                className="cookie-preview-popup"
+                style={{
+                  textAlign: custom.textAlignment,
+                  width: width,
+                  fontFamily: custom.font,
+                  fontWeight: fontWeight,
+                  fontSize: custom.size,
+                  borderRadius: custom.radius.container,
+                  backgroundColor: custom.colors.bannerBg,
+                  color: custom.colors.body,
+                  position: "relative",
+                  ...animationStyle
+                }}
               >
+                {custom.bannerStyle==="style2" &&<div
+                  style={{
+                    zIndex: -3,
+                    opacity: 0.3,
+                    backgroundColor: custom.colors.bannerBg2,
+                    borderTopRightRadius: 4,
+                    borderBottomRightRadius: 4,
+                    width: "35%",
+                    height: "100%",
+                    position: "absolute",
+                    bottom: 0,
+                    right: 0,
+                  }}
+                ></div>}
+                <div
+                  className="cookie-title"
+                  style={{ color: custom.colors.title }}
+                >
                   {translations[settings.language].heading}
-              </div>
-              <div className="cookie-desc">
-                  {translations[settings.language].description}{settings.privacyUrl && <a href={settings.privacyUrl} target="_blank">{moreInfoTranslations[settings.language]}</a>}
-
-              </div>
-              <div
-                className="cookie-btn-row"
-                style={{ justifyContent: buttonAlignment }}
-              >
-                <button
-                  className="cookie-pref-btn"
-                  style={{
-                    color: custom.colors.btnSecondaryText,
-                    backgroundColor: custom.colors.btnSecondaryBg,
-                    borderRadius: custom.radius.button,
-                  }}
+                </div>
+                <div className="cookie-desc">
+                  {translations[settings.language].description}
+                  {settings.privacyUrl && (
+                    <a href={settings.privacyUrl} target="_blank">
+                      {moreInfoTranslations[settings.language]}
+                    </a>
+                  )}
+                </div>
+                <div
+                  className="cookie-btn-row"
+                  style={{ justifyContent: buttonAlignment }}
                 >
-                   {translations[settings.language].preferences}
-                </button>
-                <button
-                  className="cookie-reject-btn"
-                  style={{
-                    color: custom.colors.btnSecondaryText,
-                    backgroundColor: custom.colors.btnSecondaryBg,
-                    borderRadius: custom.radius.button,
-                  }}
-                >
+                  <button
+                    className="cookie-pref-btn"
+                    style={{
+                      color: custom.colors.btnSecondaryText,
+                      backgroundColor: custom.colors.btnSecondaryBg,
+                      borderRadius: custom.radius.button,
+                    }}
+                  >
+                    {translations[settings.language].preferences}
+                  </button>
+                  <button
+                    className="cookie-reject-btn"
+                    style={{
+                      color: custom.colors.btnSecondaryText,
+                      backgroundColor: custom.colors.btnSecondaryBg,
+                      borderRadius: custom.radius.button,
+                    }}
+                  >
                     {translations[settings.language].reject}
-                </button>
-                <button
-                  className="cookie-accept-btn"
-                  style={{
-                    color: custom.colors.btnPrimaryText,
-                    backgroundColor: custom.colors.btnPrimaryBg,
-                    borderRadius: custom.radius.button,
-                  }}
-                >
+                  </button>
+                  <button
+                    className="cookie-accept-btn"
+                    style={{
+                      color: custom.colors.btnPrimaryText,
+                      backgroundColor: custom.colors.btnPrimaryBg,
+                      borderRadius: custom.radius.button,
+                    }}
+                  >
                     {translations[settings.language].accept}
-                </button>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div
+              className="cookie-preview"
+              style={{ justifyContent: bannerAlignment }}
+            >
+              <div
+                className="cookie-preview-popup"
+                style={{
+                  textAlign: custom.textAlignment,
+                  width: width,
+                  fontFamily: custom.font,
+                  fontWeight: fontWeight,
+                  fontSize: custom.size,
+                  borderRadius: custom.radius.container,
+                  backgroundColor: custom.colors.bannerBg,
+                  color: custom.colors.body,
+                  position: "relative",
+                  ...animationStyle
+                }}
+              >
+                {custom.bannerStyle==="style2" &&<div
+                  style={{
+                    zIndex: -3,
+                    opacity: 0.3,
+                    backgroundColor: custom.colors.bannerBg2,
+                    borderTopRightRadius: 4,
+                    borderBottomRightRadius: 4,
+                    width: "35%",
+                    height: "100%",
+                    position: "absolute",
+                    bottom: 0,
+                    right: 0,
+                  }}
+                ></div>}
+                <div
+                  className="cookie-title"
+                  style={{ color: custom.colors.title }}
+                >
+                  {translations[settings.language].ccpa.heading}
+                </div>
+                <div className="cookie-desc">
+                  {translations[settings.language].ccpa.description}
+                  {settings.privacyUrl && (
+                    <a href={settings.privacyUrl} target="_blank">
+                      {moreInfoTranslations[settings.language]}
+                    </a>
+                  )}
+                </div>
+                <div
+                  className="cookie-btn-row"
+                  style={{ justifyContent: buttonAlignment }}
+                >
+                  <p id="do-not-share-link" style={{ cursor: "pointer", color: custom.colors.body }}> {translations[settings.language].ccpa.doNotShare}</p>
+                </div>
+              </div>
+            </div>
+          )}
           <div className="cookie-fab">
             <img src={logo} alt="logo" />
           </div>
@@ -1780,5 +1878,7 @@ id="consent-banner"
     </div>
   );
 };
+
+
 
 export default SettingsPreview;

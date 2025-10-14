@@ -47,7 +47,7 @@ framer.showUI({
 
 type User = {
   id: string;
-  displayName: string;
+ name: string;
   email?: string;
   isPublihsed?: boolean;
 };

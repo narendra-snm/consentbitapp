@@ -354,7 +354,7 @@ type ScriptData = {
 };
 type User = {
   id: string;
-  displayName: string;
+  name: string;
   email?: string;
   isPublihsed?: boolean;
 };
@@ -509,6 +509,46 @@ console.log("Fetched Banner Settings:", data);
             } else {
               console.warn("framer.setCustomCode is not available.");
             }
+ if (!user?.isPublihsed) {
+  try {
+    const payload = {
+      to: user?.email || "",
+      subject: "Welcome to ConsentBit 🎉",
+      body: `
+      <h3>Hi ${user?.name|| 'there'},</h3>
+      <p>Thank you for installing the <b>ConsentBit</b> app on your Webflow website! We're excited to help you ensure privacy compliance.</p>
+      <p>Resources:</p>
+      <ul>
+        <li><a href="https://www.consentbit.com/help-document">Quick Start Guide</a></li>
+        <li><a href="https://vimeo.com/1090979483/99f46cddbf">Video Walkthrough</a></li>
+        <li><a href="https://www.consentbit.com/blog">Blog & Newsletter</a></li>
+      </ul>
+      <p>Support: <a href="mailto:web@consentbit.com">web@consentbit.com</a></p>
+      <p>- The ConsentBit Team</p>
+    `
+    
+    };
+
+    // Call Make webhook
+    const makeWebhookUrl = "https://hook.eu2.make.com/1hjj9ngmy3n7qe0wogbm1sve81tqbd95"; // <-- add your webhook URL here
+
+    const response = await fetch(makeWebhookUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const result = await response.text();
+    // optional: log result for debugging
+    console.log("Email sent:", result);
+  } catch (err) {
+    // silently handle error
+    console.error("Failed to send email:", err);
+  }
+}
+
             await saveBannerSettings(siteId, { settings: settings, compliance: compliance, customization: customization });
             setCreateComponent(false);
           }}
@@ -532,7 +572,7 @@ console.log("Fetched Banner Settings:", data);
             handleCheck={handleCheck}
            siteId={siteId}
           />
-          <SettingsPreview siteId={siteId} checkedCategories={checkedCategories} settings={settings} customization={customization} cookieBannerHtml={cookieBannerHtml} setCookieBannerHtml={setCookieBannerHtml} />
+          <SettingsPreview compliance={compliance} siteId={siteId} checkedCategories={checkedCategories} settings={settings} customization={customization} cookieBannerHtml={cookieBannerHtml} setCookieBannerHtml={setCookieBannerHtml} />
         </div>
       )}
       {activeTab === 1 && (
@@ -541,7 +581,7 @@ console.log("Fetched Banner Settings:", data);
             customization={customization}
             setCustomization={setCustomization}
           />
-          <SettingsPreview siteId={siteId} checkedCategories={checkedCategories} settings={settings} customization={customization} cookieBannerHtml={cookieBannerHtml} setCookieBannerHtml={setCookieBannerHtml} />
+          <SettingsPreview compliance={compliance} siteId={siteId} checkedCategories={checkedCategories} settings={settings} customization={customization} cookieBannerHtml={cookieBannerHtml} setCookieBannerHtml={setCookieBannerHtml} />
         </div>
       )}
       {activeTab === 2 && (

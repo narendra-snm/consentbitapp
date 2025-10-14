@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 type User = {
   id: string;
-  displayName: string;
+ name: string;
   email?: string;
   isPublished?: boolean;
 };
