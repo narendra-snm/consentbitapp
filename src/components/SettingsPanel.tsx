@@ -368,7 +368,34 @@ interface SettingsPanelProps {
   injected: boolean;
   user: User | null;
 }
+const publishInfo = await framer.getPublishInfo();
+console.log(publishInfo);
 
+async function fetchScript(){
+const publishInfo = await framer.getPublishInfo();
+console.log(publishInfo);
+const siteUrl = publishInfo?.production?.url || "Not Published";
+const result = await fetch(`https://framer-consentbit.web-8fb.workers.dev/api/fetch-scripts?url=${encodeURIComponent(siteUrl)}`);
+const data = await result.json();
+console.log("Fetched Script Data:", data);
+// return data.scripts.map((item:any, index: number) => ({
+//   script: item[index],
+//   isChanged: false,
+//   isSaved: false,
+//   isEditing: true,
+//   isDismiss: false,
+//   category: [],
+// })); 
+
+// const update=data.scripts.map((item:any, index: number) => ({
+//   ...item,
+//   category: [],
+// }));
+// console.log("Updated Script Data with category:", { ...data, scripts: update});
+// return { ...data, scripts: update};
+return data;
+
+}
 const SettingsPanel: React.FC<SettingsPanelProps> = ({
   scripts,
   siteId,
@@ -396,7 +423,28 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
     customtoggle: false,
     privacyUrl: "",
   });
+async function handleScan(){
+try {
+    
+    
 
+    const data = await fetchScript();
+    console.log("Fetched Script Data in useEffect:", data);
+
+    if (data && data.scripts) {
+      setScripts(data.scripts);
+      
+    } else {
+      console.warn("No scripts found in response:", data);
+    }
+  } catch (error) {
+    console.error("Error fetching scripts:", error);
+  } finally {
+    // always runs, whether success or error
+    
+  }
+
+}
   // COMPLIANCE is now an array, default both selected
   const [compliance, setCompliance] = useState<ComplianceType[]>(["us", "gdpr"]);
   const [exportCSVClicked, setExportCSVClicked] = useState(false);
@@ -482,7 +530,7 @@ console.log("Fetched Banner Settings:", data);
           </button>
         </div>
         {activeTab === 2 ? (
-          <button className="settings-publish-btn">Scan project</button>
+          <button className="settings-publish-btn" onClick={handleScan}>Scan project</button>
         ) : (
           <button
             onClick={() => {
@@ -515,22 +563,49 @@ console.log("Fetched Banner Settings:", data);
       to: user?.email || "",
       subject: "Welcome to ConsentBit 🎉",
       body: `
-      <h3>Hi ${user?.name|| 'there'},</h3>
-      <p>Thank you for installing the <b>ConsentBit</b> app on your Webflow website! We're excited to help you ensure privacy compliance.</p>
-      <p>Resources:</p>
-      <ul>
-        <li><a href="https://www.consentbit.com/help-document">Quick Start Guide</a></li>
-        <li><a href="https://vimeo.com/1090979483/99f46cddbf">Video Walkthrough</a></li>
-        <li><a href="https://www.consentbit.com/blog">Blog & Newsletter</a></li>
-      </ul>
-      <p>Support: <a href="mailto:web@consentbit.com">web@consentbit.com</a></p>
-      <p>- The ConsentBit Team</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+   <h3 style="color: #2d7ff9; margin-top: 0;">Hi <span style="color: #222;">${user?.name || 'there'}</span>,</h3>
+
+  <p>
+    Thank you for installing the <b>ConsentBit</b> app on your Webflow website! We're excited to have you on board and ready to help you ensure privacy compliance with ease.
+  </p>
+ 
+  <p> To help you get started smoothly, we've prepared a few helpful resources: </p>
+  <ul>
+    <li><a href="https://www.consentbit.com/help-document" target="_blank">Quick Start Guide</a>:Step-by-step instructions for setup and deployment.</li>
+   <li><a href="https://vimeo.com/1090979483/99f46cddbf" target="_blank">Video Walkthrough </a>:Learn how to configure the app from basics to advanced settings. </li>
+    <li> <a href="https://www.consentbit.com/blog" target="_blank">Blog & Newsletter </a>:Explore best practices and advanced tips for ongoing optimization.</li>
+  </ul>
+  
+  <p>Need assistance? We're here for you:</p>
+  <ul>
+    <li>Email us anytime at <a href="mailto:web@consentbit.com" target="_blank">web@consentbit.com</a></li>
+    <li>Book a <a href="https://calendly.com/jibin-seattlenewmedia/30min" target="_blank">quick support call</a></li>
+    <li>Fill out our <a href="https://www.consentbit.com/contact" target="_blank">contact form</a> and we'll get back to you shortly.</li>
+  </ul>  
+
+  <p>
+We're thrilled to support you in building trust with your users and achieving global privacy compliance. If you have questions, feedback, or feature suggestions, don't hesitate to reach out, we're only a message away.
+  </p>
+  <p>
+    Thanks again,<br>
+    <strong>The ConsentBit Team</strong><br>    
+  </p>
+
+</body>
+</html>
     `
     
     };
 
     // Call Make webhook
-    const makeWebhookUrl = "https://hook.eu2.make.com/1hjj9ngmy3n7qe0wogbm1sve81tqbd95"; // <-- add your webhook URL here
+    const makeWebhookUrl = "https://hook.us1.make.com/e6qg4kchtoeicjoo3dy0vdrcxg1het6p"; // <-- add your webhook URL here
 
     const response = await fetch(makeWebhookUrl, {
       method: "POST",

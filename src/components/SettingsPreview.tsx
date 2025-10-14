@@ -1687,7 +1687,7 @@ ${(compliance.length === 1 && compliance.includes("gdpr")) ?"":`<div
     <div className="settings-preview-main">
       <div className="settings-preview-header" style={{ display: "flex", alignItems: "center" }}>
         Preview
-        <div style={{ marginLeft: "auto", display: "flex", gap: 10 }}>
+        {   <div style={{ marginLeft: "auto", display: "flex", gap: 10,visibility: compliance.includes("us")?"visible":"hidden" }}>
           <button
             onClick={() => setSelectedBannerType("gdpr")}
             style={{
@@ -1716,7 +1716,7 @@ ${(compliance.length === 1 && compliance.includes("gdpr")) ?"":`<div
           >
             CCPA
           </button>
-        </div>
+        </div>}
       </div>
       <div className="settings-preview-content">
         <div className="browser-mockup">
